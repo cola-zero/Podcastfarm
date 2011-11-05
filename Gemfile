@@ -18,6 +18,7 @@ end
 
 gem 'jquery-rails'
 gem 'haml-rails'
+gem 'twitter-bootstrap-rails'
 
 group :development, :test do
   gem 'rspec-rails', '~> 2.7.0'
