@@ -1,6 +1,7 @@
 Podcastfarm::Application.routes.draw do
   get "pages/home"
 
+  match 'auth/:provider/callback' => "sessions#create"
   resource 'sessions'
 
   root :to => "pages#home"

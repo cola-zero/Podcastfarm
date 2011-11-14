@@ -12,4 +12,21 @@
 class User < ActiveRecord::Base
   validates :name, :presence => true
   validates :nickname, :presence => true
+
+  has_many :authorization
+
+  def self.sign_in_or_create_from_hash(auth_hash, user = :user_not_presented)
+    return false if auth_hash == nil
+    auth = Authorization.find_from_hash(auth_hash)
+    return auth.user if auth != nil
+    user = User.create_from_hash(auth_hash) if user == :user_not_presented || user == nil
+    auth = Authorization.create_from_hash(auth_hash, user)
+    return auth.user
+  end
+
+  def self.create_from_hash(auth_hash)
+    return false if auth_hash[:info] == nil
+    User.create({ :name => auth_hash[:info][:name],
+                  :nickname => auth_hash[:info][:nickname] })
+  end
 end
