@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20111105064431) do
+ActiveRecord::Schema.define(:version => 20111109075036) do
 
   create_table "authorizations", :force => true do |t|
     t.string   "provider",   :null => false
@@ -22,6 +22,16 @@ ActiveRecord::Schema.define(:version => 20111105064431) do
   end
 
   add_index "authorizations", ["provider", "uid"], :name => "index_authorizations_on_provider_and_uid"
+
+  create_table "feeds", :force => true do |t|
+    t.string   "title"
+    t.string   "url",         :null => false
+    t.string   "description"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "feeds", ["url"], :name => "index_feeds_on_url"
 
   create_table "users", :force => true do |t|
     t.string   "name",       :null => false

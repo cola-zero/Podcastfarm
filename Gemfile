@@ -19,6 +19,7 @@ end
 gem 'jquery-rails'
 gem 'haml-rails'
 gem 'twitter-bootstrap-rails'
+gem 'feedzirra', '~> 0.1.1', :path => '~/work/ruby/feedzirra'
 
 group :development, :test do
   gem 'rspec-rails', '~> 2.7.0'
