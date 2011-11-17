@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 # == Schema Information
 #
 # Table name: users
@@ -13,7 +14,7 @@
 
 FactoryGirl.define do
   factory :user do
-    name "MyString"
-    nickname "MyString"
+    name "こーら"
+    nickname "cola_zero"
   end
 end

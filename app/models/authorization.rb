@@ -19,12 +19,14 @@ class Authorization < ActiveRecord::Base
 
   def self.find_from_hash(auth)
     return false if auth == nil
-    Authorization.find_by_provider_and_uid(auth[:provider], auth[:uid])
+    Authorization.find_by_provider_and_uid(auth['provider'], auth['uid'])
   end
 
   def self.create_from_hash(auth, user = :user_not_logged_in)
     user = User.create_from_hash(auth) if user == :user_not_logged_in || user == nil
-    attr = { :provider => auth[:provider], :uid => auth[:uid], :user => user }
-    Authorization.create(attr)
+    return false if user == false
+    attr = { :provider => auth['provider'], :uid => auth['uid'], :user => user }
+    auth = Authorization.create(attr)
+    (auth.new_record?)? false : auth
   end
 end

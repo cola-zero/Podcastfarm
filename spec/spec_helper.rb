@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 require 'rubygems'
 require 'spork'
 require 'simplecov'
@@ -14,6 +15,15 @@ Spork.prefork do
 
 
   SimpleCov.start 'rails'
+
+  OmniAuth.config.test_mode = true
+  OmniAuth.config.mock_auth[:twitter] = {
+    'provider' => 'twitter',
+    'uid' => '123545',
+    'info' => { 'nickname' => 'cola_zero',
+      'name' => 'こーら'}
+  }
+
   # Requires supporting ruby files with custom matchers and macros, etc,
   # in spec/support/ and its subdirectories.
   Dir[Rails.root.join("spec/support/**/*.rb")].each {|f| require f}
@@ -46,7 +56,7 @@ end
 
 Spork.each_run do
   # This code will be run each time you run your specs.
-
+  FactoryGirl.reload
 end
 
 # --- Instructions ---

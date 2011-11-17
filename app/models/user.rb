@@ -15,7 +15,7 @@ class User < ActiveRecord::Base
 
   has_many :authorization
 
-  def self.sign_in_or_create_from_hash(auth_hash, user = :user_not_presented)
+  def self.find_or_create_from_hash(auth_hash, user = :user_not_presented)
     return false if auth_hash == nil
     auth = Authorization.find_from_hash(auth_hash)
     return auth.user if auth != nil
@@ -25,8 +25,9 @@ class User < ActiveRecord::Base
   end
 
   def self.create_from_hash(auth_hash)
-    return false if auth_hash[:info] == nil
-    User.create({ :name => auth_hash[:info][:name],
-                  :nickname => auth_hash[:info][:nickname] })
+    return false if auth_hash['info'] == nil
+    user = User.create({ :name => auth_hash['info']['name'],
+                         :nickname => auth_hash['info']['nickname'] })
+    (user.new_record?)? false : user
   end
 end
