@@ -72,5 +72,23 @@ describe SessionsController do
       end
     end
     
-  end  
+  end
+
+  describe "DELETE 'destroy'" do
+    before do
+      controller.sign_in Factory(:user)
+    end
+    it 'should sign a user out' do
+      delete 'destroy'
+      controller.should_not be_signed_in
+      response.should redirect_to(root_path)
+    end
+
+    describe 'flash messaged' do
+      it 'should be "Signed out."' do
+        delete 'destroy'
+        controller.flash[:notice].should == "Signed out."
+      end
+    end
+  end
 end

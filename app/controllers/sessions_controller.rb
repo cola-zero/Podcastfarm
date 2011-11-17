@@ -10,4 +10,10 @@ class SessionsController < ApplicationController
     end
       redirect_to '/'
   end
+
+  def destroy
+    sign_out
+    flash[:notice] = "Signed out."
+    redirect_to '/'
+  end
 end
