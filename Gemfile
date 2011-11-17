@@ -30,6 +30,8 @@ group :development, :test do
   gem 'rb-fsevent'
   gem 'spork', '>= 0.9.0.rc9'
   gem 'growl'
+  gem 'libnotify'
+  gem 'rb-inotify', '>= 0.5.1'
   gem 'annotate', :git => 'git://github.com/ctran/annotate_models.git'
   gem 'simplecov', :require => false
   gem 'factory_girl', '~> 2.2.0'
