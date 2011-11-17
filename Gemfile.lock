@@ -21,12 +21,13 @@ GIT
       hashie (~> 1.2)
       rack
 
-PATH
-  remote: ~/work/ruby/feedzirra
+GIT
+  remote: https://github.com/pauldix/feedzirra.git
+  revision: 37620286983857b504b1bc1353333a7d5e302c6b
   specs:
     feedzirra (0.1.1)
       activesupport (>= 3.0.8)
-      builder (>= 3.0.0)
+      builder (>= 2.1.2)
       curb (~> 0.7.15)
       i18n (>= 0.5.0)
       loofah (~> 1.2.0)
