@@ -21,7 +21,7 @@ class User < ActiveRecord::Base
     return auth.user if auth != nil
     user = User.create_from_hash(auth_hash) if user == :user_not_presented || user == nil
     auth = Authorization.create_from_hash(auth_hash, user)
-    return auth.user
+    (auth != false)? auth.user : false
   end
 
   def self.create_from_hash(auth_hash)
