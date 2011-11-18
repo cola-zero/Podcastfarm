@@ -25,6 +25,7 @@ group :development, :test do
   gem 'rspec-rails', '~> 2.7.0'
   gem 'guard-bundler'
   gem 'guard-rspec'
+  gem 'guard-rails'
   gem 'spin'
   gem 'guard-spork'
   gem 'rb-fsevent'
@@ -53,3 +54,5 @@ end
 # To use debugger
 # gem 'ruby-debug19', :require => 'ruby-debug'
 
+
+gem 'unicorn'
