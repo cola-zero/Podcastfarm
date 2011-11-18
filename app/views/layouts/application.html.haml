@@ -10,6 +10,16 @@
       %div.topbar-inner
         %div.container
           %a.brand Podcast Farm
+          %ul.nav
+            %li.active= link_to "Home", :root
+          %ul{"class" => ["nav", "secondary-nav"]}
+            - if signed_in?
+              %li{"class" => "dropdown", "data-dropdown" => "dropdown"}
+                = link_to current_user.nickname, "/#", :class => "dropdown-toggle"
+                %ul.menu-dropdown
+                  %li= link_to "Sign Out", :signout
+            - else
+              %li= link_to "Sign in", "/auth/twitter"
     .contents
       %p#notice
         = notice
@@ -18,3 +28,24 @@
       .container
         = yield
 
+        -# <li class="dropdown" data-dropdown="dropdown" >
+        -# <a href="#" class="dropdown-toggle">Dropdown</a>
+        -# <ul class="dropdown-menu">
+        -# <li><a href="#">Secondary link</a></li>
+        -# <li><a href="#">Something else here</a></li>
+        -# <li class="divider"></li>
+        -# <li><a href="#">Another link</a></li>
+        -# </ul>
+        -# </li>
+      -# <ul class="nav secondary-nav">
+      -#       <li class="dropdown">
+      -#         <a href="#" class="dropdown-toggle">Dropdown</a>
+      -#         <ul class="dropdown-menu">
+
+      -#           <li><a href="#">Secondary link</a></li>
+      -#           <li><a href="#">Something else here</a></li>
+      -#           <li class="divider"></li>
+      -#           <li><a href="#">Another link</a></li>
+      -#         </ul>
+      -#       </li>
+      -#     </ul>

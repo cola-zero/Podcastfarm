@@ -1,6 +1,8 @@
 Podcastfarm::Application.routes.draw do
   get "pages/home"
 
+  match 'signout' => "sessions#destroy", :as => :signout
+
   match 'auth/:provider/callback' => "sessions#create"
   resource 'sessions'
 

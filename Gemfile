@@ -18,7 +18,7 @@ end
 
 gem 'jquery-rails'
 gem 'haml-rails'
-gem 'twitter-bootstrap-rails'
+gem 'twitter-bootstrap-rails', :git => 'http://github.com/seyhunak/twitter-bootstrap-rails.git'
 gem 'feedzirra', '~> 0.1.1', :git => 'https://github.com/pauldix/feedzirra.git'
 
 group :development, :test do
@@ -40,6 +40,7 @@ group :development, :test do
   gem 'database_cleaner', '~> 0.6.7'
   gem 'omniauth', '~> 1.0.0', :git => 'https://github.com/intridea/omniauth.git'
   gem 'omniauth-contrib', :git => 'https://github.com/intridea/omniauth-contrib.git'
+  gem 'omniauth-twitter'
 end
 
 # To use ActiveModel has_secure_password
