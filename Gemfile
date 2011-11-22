@@ -18,8 +18,8 @@ end
 
 gem 'jquery-rails'
 gem 'haml-rails'
-gem 'twitter-bootstrap-rails', :git => 'http://github.com/seyhunak/twitter-bootstrap-rails.git'
-gem 'feedzirra', '~> 0.1.1', :git => 'https://github.com/pauldix/feedzirra.git'
+gem 'twitter-bootstrap-rails', :git => 'git://github.com/seyhunak/twitter-bootstrap-rails.git'
+gem 'feedzirra', '~> 0.1.1', :git => 'git://github.com/pauldix/feedzirra.git'
 
 group :development, :test do
   gem 'rspec-rails', '~> 2.7.0'
@@ -31,15 +31,13 @@ group :development, :test do
   gem 'rb-fsevent'
   gem 'spork', '>= 0.9.0.rc9'
   gem 'growl'
-  gem 'libnotify'
-  gem 'rb-inotify', '>= 0.5.1'
   gem 'annotate', :git => 'git://github.com/ctran/annotate_models.git'
   gem 'simplecov', :require => false
   gem 'factory_girl', '~> 2.2.0'
   gem 'factory_girl_rails', '~>1.3.0'
   gem 'database_cleaner', '~> 0.6.7'
-  gem 'omniauth', '~> 1.0.0', :git => 'https://github.com/intridea/omniauth.git'
-  gem 'omniauth-contrib', :git => 'https://github.com/intridea/omniauth-contrib.git'
+  gem 'omniauth', '~> 1.0.0', :git => 'git://github.com/intridea/omniauth.git'
+  gem 'omniauth-contrib', :git => 'git://github.com/intridea/omniauth-contrib.git'
   gem 'omniauth-twitter'
 end
 
