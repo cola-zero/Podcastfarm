@@ -15,8 +15,7 @@
 FactoryGirl.define do
   factory :feed do
     title ""
-    url "MyString"
-    author "MyString"
+    url "file://#{URI.escape(File.join(File.dirname(File.expand_path(__FILE__, Dir.getwd)), "..", "fixtures", "feed.rss"))}"
     description "MyString"
   end
 end
