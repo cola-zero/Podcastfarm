@@ -14,6 +14,8 @@ class User < ActiveRecord::Base
   validates :nickname, :presence => true
 
   has_many :authorization
+  has_many :subscriptions
+  has_many :feeds, :through => :subscriptions
 
   def self.find_or_create_from_hash(auth_hash, user = :user_not_presented)
     return false if auth_hash == nil

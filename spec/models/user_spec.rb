@@ -147,9 +147,9 @@ describe User do
     end
   end
   
-<<<<<<< HEAD
-=======
   describe "Feed association" do
+    let(:auth) { { 'provider' => 'twitter', 'uid' => 'asdfg',
+        'info' => { 'name' => 'こーら', 'nickname' => 'cola_zero'} } }
     subject { User.create_from_hash(auth) }
     it { should respond_to(:feeds) }
 
@@ -171,11 +171,4 @@ describe User do
     end
 
   end
-
-  describe "Folder association" do
-    subject{ User.new }
-    it { should respond_to(:folders) }
-  end
-
->>>>>>> add test for register_feed method.
 end
