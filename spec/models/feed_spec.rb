@@ -119,16 +119,18 @@ describe Feed do
     it { should respond_to(:users) }
   end
 
-  describe "#register_feed method" do
-    subject { Feed }
-    it { should respond_to(:register_feed) }
+  describe ".register_user method" do
+    subject { Feed.create( :url => url ) }
+    it { should respond_to(:register_user) }
 
     describe "assign users" do
       let(:user) { Factory(:user) }
-      
+      let(:feed) { Feed.create( :url => url )}
+
       before do
-        Feed.register_feed(url, user)
+        feed.register_user(user)
       end
+
       it "should add user" do
         feed = Feed.find_by_url(url)
         feed.users.should eq([user])
@@ -136,14 +138,14 @@ describe Feed do
 
       let(:second_user) { Factory(:user) }
       it "should add another user" do
-        Feed.register_feed(url, second_user)
+        feed.register_user(second_user)
         feed = Feed.find_by_url(url)
         feed.users.should eq([user, second_user])
       end
 
       it "should not add same user" do
-        Feed.register_feed(url, user)
-        Feed.register_feed(url, user)
+        feed.register_user(user)
+        feed.register_user(user)
         feed = Feed.find_by_url(url)
         feed.users.should eq([user])
       end
@@ -153,17 +155,17 @@ describe Feed do
     describe "invalid arguments" do
       context "user is nil" do
         it "should return false" do
-          Feed.register_feed(url, nil).should be_false
+          feed.register_user(nil).should be_false
         end
 
         it "should not add feed" do
-          lambda{ Feed.register_feed(url, nil)}.should
+          lambda{ feed.register_user(nil)}.should
           change(Feed, :count).by(0)
         end
 
         it "should not add users" do
           feed = Feed.find_or_create_by_url(url)
-          lambda{ Feed.register_feed(url, nil)}.should \
+          lambda{ feed.register_user(nil)}.should \
           change(Feed.find_by_url(url).users, :size).by(0)
         end
       end
