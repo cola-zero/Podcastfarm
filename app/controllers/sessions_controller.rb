@@ -1,5 +1,5 @@
 class SessionsController < ApplicationController
-  include SessionsHelper
+  include ApplicationHelper
   def create
     auth = request.env['omniauth.auth']
     sign_in User.find_or_create_from_hash(auth)
