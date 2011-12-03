@@ -16,6 +16,15 @@ class Feed < ActiveRecord::Base
 
   before_validation :get_feed_infomation
 
+  has_many :subscriptions
+  has_many :users, :through => :subscriptions
+
+  def self.register_feed(url, user)
+    return false unless user.respond_to?(:nickname)
+    feed = Feed.find_or_create_by_url(url)
+    feed.users << [user] unless feed.users.find_by_id(user.id)
+  end
+
   private
 
   def get_feed_infomation

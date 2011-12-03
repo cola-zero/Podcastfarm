@@ -147,4 +147,35 @@ describe User do
     end
   end
   
+<<<<<<< HEAD
+=======
+  describe "Feed association" do
+    subject { User.create_from_hash(auth) }
+    it { should respond_to(:feeds) }
+
+    let(:url)  { "file://#{URI.escape(File.join(File.dirname(File.expand_path(__FILE__, Dir.getwd)), "..", "fixtures", "feed.rss"))}" }
+    let(:user) { User.create_from_hash(auth)}
+    it "can access to feed" do
+      Feed.register_feed(url, user)
+      feed = Feed.find_by_url(url)
+      user.feeds.should eq([feed])
+    end
+
+    it "should add another feed" do
+      Feed.register_feed(url, user)
+      feed1 = Feed.find_by_url(url)
+      url = "file://#{URI.escape(File.join(File.dirname(File.expand_path(__FILE__, Dir.getwd)), "..", "fixtures", "first_feed.rss"))}"
+      Feed.register_feed(url, user)
+      feed2 = Feed.find_by_url(url)
+      user.feeds.should eq([feed1, feed2])
+    end
+
+  end
+
+  describe "Folder association" do
+    subject{ User.new }
+    it { should respond_to(:folders) }
+  end
+
+>>>>>>> add test for register_feed method.
 end

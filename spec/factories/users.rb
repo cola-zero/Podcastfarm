@@ -13,8 +13,16 @@
 # Read about factories at http://github.com/thoughtbot/factory_girl
 
 FactoryGirl.define do
+  sequence :name do |n|
+    "MyName#{n}"
+  end
+
+  sequence :nickname do |n|
+    "nickname#{n}"
+  end
+
   factory :user do
-    name "こーら"
-    nickname "cola_zero"
+    name { Factory.next(:name) }
+    nickname { Factory.next(:nickname) }
   end
 end
