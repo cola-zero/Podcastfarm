@@ -155,18 +155,19 @@ describe User do
 
     let(:url)  { "file://#{URI.escape(File.join(File.dirname(File.expand_path(__FILE__, Dir.getwd)), "..", "fixtures", "feed.rss"))}" }
     let(:user) { User.create_from_hash(auth)}
+    let(:feed) { Feed.create( :url => url )}
     it "can access to feed" do
-      Feed.register_feed(url, user)
+      feed.register_user(user)
       feed = Feed.find_by_url(url)
       user.feeds.should eq([feed])
     end
 
     it "should add another feed" do
-      Feed.register_feed(url, user)
-      feed1 = Feed.find_by_url(url)
+      feed1 = Feed.find_or_create_by_url(url)
+      feed1.register_user(user)
       url = "file://#{URI.escape(File.join(File.dirname(File.expand_path(__FILE__, Dir.getwd)), "..", "fixtures", "first_feed.rss"))}"
-      Feed.register_feed(url, user)
-      feed2 = Feed.find_by_url(url)
+      feed2 = Feed.find_or_create_by_url(url)
+      feed2.register_user(user)
       user.feeds.should eq([feed1, feed2])
     end
 
