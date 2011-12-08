@@ -23,6 +23,8 @@ gem 'feedzirra', '~> 0.1.1', :git => 'git://github.com/pauldix/feedzirra.git'
 
 group :development, :test do
   gem 'rspec-rails', '~> 2.7.0'
+  gem 'capybara'  
+  gem 'launchy'  
   gem 'guard-bundler'
   gem 'guard-rspec'
   gem 'guard-rails'
