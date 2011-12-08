@@ -27,11 +27,24 @@ describe FeedsController do
     { :url => "file://#{URI.escape(File.join(File.dirname(File.expand_path(__FILE__, Dir.getwd)), "..", "fixtures", "feed.rss"))}" }
   end
 
+  before do
+    user = Factory(:user)
+    controller.sign_in(user)
+  end
+
   describe "GET index" do
     it "assigns all feeds as @feeds" do
       feed = Feed.create! valid_attributes
       get :index
       assigns(:feeds).should eq([feed])
+    end
+
+    context "when user does not signed in" do
+      it "should redirect to signin path" do
+        controller.sign_out
+        get :index
+        response.should redirect_to "/auth/twitter"
+      end
     end
   end
 
@@ -41,12 +54,29 @@ describe FeedsController do
       get :show, :id => feed.id
       assigns(:feed).should eq(feed)
     end
+
+    context "when user does not signed in" do
+      it "should redirect to signin path" do
+        controller.sign_out
+        feed = Feed.create! valid_attributes
+        get :show, :id => feed.id
+        response.should redirect_to "/auth/twitter"
+      end
+    end
   end
 
   describe "GET new" do
     it "assigns a new feed as @feed" do
       get :new
       assigns(:feed).should be_a_new(Feed)
+    end
+
+    context "when user does not signed in" do
+      it "should redirect to signin path" do
+        controller.sign_out
+        get :new
+        response.should redirect_to "/auth/twitter"
+      end
     end
   end
 
@@ -56,9 +86,26 @@ describe FeedsController do
       get :edit, :id => feed.id
       assigns(:feed).should eq(feed)
     end
+
+    context "when user does not signed in" do
+      it "should redirect to signin path" do
+        controller.sign_out
+        feed = Feed.create! valid_attributes
+        get :edit, :id => feed.id
+        response.should redirect_to "/auth/twitter"
+      end
+    end
   end
 
   describe "POST create" do
+    context "when user does not signed in" do
+      it "should redirect to signin path" do
+        controller.sign_out
+        post :create, :feed => valid_attributes
+        response.should redirect_to "/auth/twitter"
+      end
+    end
+
     describe "with valid params" do
       it "creates a new Feed" do
         expect {
