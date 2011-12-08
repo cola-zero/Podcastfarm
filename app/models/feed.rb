@@ -11,6 +11,7 @@
 #
 
 class Feed < ActiveRecord::Base
+  include ApplicationHelper
   validates :url, :presence => true, :uniqueness => true
   validate :url_is_valid
 
@@ -29,12 +30,12 @@ class Feed < ActiveRecord::Base
 
   def get_feed_infomation
     @feed_parser = make_parser
-    if @feed_parser == 0 || @feed_parser == nil || @feed_parser == {}
-      self.title = ""
-      self.description = ""
-    else
+    if @feed_parser.respond_to?(:title) && @feed_parser.respond_to?(:description)
       self.title = @feed_parser.title || ""
       self.description = @feed_parser.description || ""
+    else
+      self.title ||= ""
+      self.description ||= ""
     end
   end
 

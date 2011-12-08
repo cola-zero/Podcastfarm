@@ -33,15 +33,34 @@ describe FeedsController do
   end
 
   describe "GET index" do
-    it "assigns all feeds as @feeds" do
-      feed = Feed.create! valid_attributes
-      get :index
-      assigns(:feeds).should eq([feed])
+    context "when user signed in" do
+      before do
+        @user = Factory(:user)
+        controller.sign_in(@user)
+      end
+      
+      it "assigns all feeds as @feeds" do
+        feed = Feed.create! valid_attributes
+        feed.register_user(@user)
+        get :index
+        assigns(:feeds).should eq([feed])
+      end
+
+      it "should not assign another user's feed in @feeds" do
+        feed = Feed.create! valid_attributes
+        different_user = Factory(:user)
+        feed.register_user(different_user)
+        get :index
+        assigns(:feeds).should eq([])
+      end
     end
 
     context "when user does not signed in" do
-      it "should redirect to signin path" do
+      before do
         controller.sign_out
+      end
+
+      it "should redirect to signin path" do
         get :index
         response.should redirect_to "/auth/twitter"
       end

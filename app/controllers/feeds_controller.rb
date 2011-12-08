@@ -1,9 +1,10 @@
 class FeedsController < ApplicationController
   before_filter :authenticate
+
   # GET /feeds
   # GET /feeds.json
   def index
-    @feeds = Feed.all
+    @feeds = Feed.joins(:users).where(:users => { :id => current_user.id} )
 
     respond_to do |format|
       format.html # index.html.erb

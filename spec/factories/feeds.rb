@@ -13,9 +13,21 @@
 # Read about factories at http://github.com/thoughtbot/factory_girl
 
 FactoryGirl.define do
+  sequence :title do |n|
+    "Example feeds ##{n}"
+  end
+
+  sequence :url do |n|
+    "http://example#{n}.com/feed.rss"
+  end
+
+  sequence :description do |n|
+    "This is #{n}th feed."
+  end
+
   factory :feed do
-    title ""
-    url "file://#{URI.escape(File.join(File.dirname(File.expand_path(__FILE__, Dir.getwd)), "..", "fixtures", "feed.rss"))}"
-    description "MyString"
+    title { Factory.next(:name) }
+    url   { Factory.next(:url) }
+    description { Factory.next(:nickname) }
   end
 end
