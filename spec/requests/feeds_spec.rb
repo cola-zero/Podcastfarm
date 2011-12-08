@@ -12,5 +12,13 @@ describe "Feeds" do
       visit feeds_path
       page.should have_content "cola_zero"
     end
+
+    it "should show feeds" do
+      visit "/auth/twitter"
+      feed = Factory(:feed)
+      feed.register_user(User.find_by_nickname("cola_zero"))
+      visit feeds_path
+      page.should have_content feed.title
+    end
   end
 end
