@@ -20,10 +20,10 @@ describe "ApplicationHelpers" do
       end
       
       it 'should return right User' do
-        Factory(:user)
-        session[:user_id] = 1
-        helper.current_user.name.should == "こーら"
-        helper.current_user.nickname.should == 'cola_zero'
+        user = Factory(:user)
+        session[:user_id] = user.id
+        helper.current_user.name.should == user.name
+        helper.current_user.nickname.should == user.nickname
       end
     end
   end
