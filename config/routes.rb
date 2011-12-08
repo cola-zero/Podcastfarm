@@ -5,8 +5,7 @@ Podcastfarm::Application.routes.draw do
 
   match 'auth/:provider/callback' => "sessions#create"
   resource 'sessions'
-
-  resource 'feeds'
+  resources "feeds"
 
   root :to => "pages#home"
   # The priority is based upon order of creation:
