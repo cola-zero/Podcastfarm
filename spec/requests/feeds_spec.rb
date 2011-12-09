@@ -42,9 +42,41 @@ describe "Feeds" do
       feed1.register_user(user)
       feed2.register_user(different_user)
       visit feeds_path
-      save_and_open_page
       page.should_not have_content feed2.title
       page.should_not have_content feed2.url
+    end
+  end
+
+  describe "/feeds/new" do
+    def valid_url
+      { "url" => "file://#{URI.escape(File.join(File.dirname(File.expand_path(__FILE__, Dir.getwd)), "..", "fixtures", "feed.rss"))}" }
+    end
+    before do
+      visit '/auth/twitter'
+    end
+
+    it "should success" do
+      visit new_feed_path
+      page.should have_selector "h1"
+      page.should have_content "Podcastfarm"
+    end
+
+    context "when valid url is given" do
+      it "should create new feeds" do
+        visit new_feed_path
+        page.fill_in "feed_url", :with => valid_url["url"]
+        page.click_button "Save"
+        page.should have_content "Feed was successfully created."
+      end
+    end
+
+    context "when non valid url is given" do
+      it "should not save new feeds" do
+        visit new_feed_path
+        page.fill_in "feed_url", :with => "asdfg"
+        page.click_button "Save"
+        page.should have_content "Url given url is invalid"
+      end
     end
   end
 end

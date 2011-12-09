@@ -8,8 +8,12 @@ describe "feeds/new.html.haml" do
   it "renders new feed form" do
     render
 
-    # Run the generator again with the --webrat flag if you want to use webrat matchers
     assert_select "form", :action => feeds_path, :method => "post" do
+      assert_select "div", :class => 'actions' do
+        assert_select "label", :for => "feed_url"
+        assert_select "input", :id => "feed_url", :name => "feed[url]"
+        assert_select "input", :name => "commit", :type => "submit"
+      end
     end
   end
 end
