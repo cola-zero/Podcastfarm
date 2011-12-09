@@ -49,9 +49,12 @@ class Feed < ActiveRecord::Base
 
   def valid_url?
     begin
-      %[http file feed].include?(URI.parse(self.url).scheme)
+      uri = URI.parse(self.url)
       rescue URI::InvalidURIError
         return false
+    end
+    if uri.scheme.nil? || !(%[http file feed].include?(uri.scheme))
+      return false
     end
     return true
   end

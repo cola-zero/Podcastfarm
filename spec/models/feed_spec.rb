@@ -61,6 +61,12 @@ describe Feed do
       it "should not be valid" do
         feed.should_not be_valid
       end
+      context "when url has no scheme" do
+        let(:url) { "invalid_url" }
+        it "should not be valid" do
+          feed.should_not be_valid
+        end
+      end
     end
   end
 
