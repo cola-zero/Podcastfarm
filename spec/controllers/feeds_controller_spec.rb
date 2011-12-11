@@ -132,6 +132,37 @@ describe FeedsController do
         }.to change(Feed, :count).by(1)
       end
 
+      describe "duplicate feed" do
+        it "should not create new feed" do
+          post :create, :feed => valid_attributes
+          expect { 
+            post :create, :feed => valid_attributes
+          }.to change(Feed, :count).by(0)
+        end
+        context "when other user's feeds are exist" do
+          before do
+            different_user = Factory(:user)
+            controller.sign_in(different_user)
+            post :create, :feed => valid_attributes
+          end
+          it "should not create new feed" do
+            controller.sign_in(User.first)
+            expect { 
+              post :create, :feed => valid_attributes
+            }.to change(Feed, :count).by(0)
+          end
+
+          it "should register to current_user" do
+            controller.sign_in(User.first)
+            post :create, :feed => valid_attributes
+            feed = Feed.find_by_url(valid_attributes[:url])
+            feed.users.should eq User.all.reverse
+            controller.current_user.feeds.should eq [feed]
+          end
+        end
+      end
+
+
       it "register feed to current user" do
         post :create, :feed => valid_attributes
         feed = Feed.find_by_url(valid_attributes[:url])

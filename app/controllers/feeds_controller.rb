@@ -45,7 +45,7 @@ class FeedsController < ApplicationController
     @feed = Feed.new(params[:feed])
 
     respond_to do |format|
-      if @feed.save
+      if @feed.save || !(Feed.find_by_url(params[:feed][:url]).nil?)
         @feed.register_user(current_user)
         format.html { redirect_to @feed, notice: 'Feed was successfully created.' }
         format.json { render json: @feed, status: :created, location: @feed }
