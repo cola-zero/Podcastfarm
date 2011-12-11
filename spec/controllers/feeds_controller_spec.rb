@@ -132,6 +132,13 @@ describe FeedsController do
         }.to change(Feed, :count).by(1)
       end
 
+      it "register feed to current user" do
+        post :create, :feed => valid_attributes
+        feed = Feed.find_by_url(valid_attributes[:url])
+        feed.users.should eq [controller.current_user]
+        controller.current_user.feeds.should eq [feed]
+      end
+
       it "assigns a newly created feed as @feed" do
         post :create, :feed => valid_attributes
         assigns(:feed).should be_a(Feed)
@@ -157,6 +164,11 @@ describe FeedsController do
         Feed.any_instance.stub(:save).and_return(false)
         post :create, :feed => {}
         response.should render_template("new")
+      end
+
+      it "do not register feed to current user" do
+        post :create, :feed => {}
+        controller.current_user.feeds.should eq []
       end
     end
   end

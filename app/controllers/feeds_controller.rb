@@ -46,6 +46,7 @@ class FeedsController < ApplicationController
 
     respond_to do |format|
       if @feed.save
+        @feed.register_user(current_user)
         format.html { redirect_to @feed, notice: 'Feed was successfully created.' }
         format.json { render json: @feed, status: :created, location: @feed }
       else

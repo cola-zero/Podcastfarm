@@ -68,6 +68,14 @@ describe "Feeds" do
         page.click_button "Save"
         page.should have_content "Feed was successfully created."
       end
+
+      it "should show users feed list" do
+        visit new_feed_path
+        page.fill_in "feed_url", :with => valid_url["url"]
+        page.click_button "Save"
+        visit feeds_path
+        page.should have_content "Example Feed"
+      end
     end
 
     context "when non valid url is given" do
