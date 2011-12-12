@@ -3,8 +3,8 @@
 # Table name: subscriptions
 #
 #  id         :integer         not null, primary key
-#  user_id    :integer         not null
-#  feed_id    :integer         not null
+#  user_id    :integer
+#  feed_id    :integer
 #  created_at :datetime
 #  updated_at :datetime
 #
