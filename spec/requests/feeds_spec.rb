@@ -98,9 +98,10 @@ describe "Feeds" do
     end
 
     it "should delete feed" do
-      page.click_link "Destroy"
-      page.driver.browser.switch_to.alert.accept
-      page.should_not have_content "Example Feed"
+      handle_js_confirm (true)do
+        page.click_link "Destroy"
+        page.should_not have_content "Example Feed"
+      end
     end
   end
 end

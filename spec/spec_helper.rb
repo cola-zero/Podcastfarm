@@ -11,9 +11,15 @@ Spork.prefork do
   # This file is copied to spec/ when you run 'rails generate rspec:install'
   ENV["RAILS_ENV"] ||= 'test'
   require File.expand_path("../../config/environment", __FILE__)
+  require 'database_cleaner'
   require 'rspec/rails'
   require 'rspec/autorun'
-  require 'capybara/rspec'  
+  require 'capybara/rspec'
+  require 'capybara/rails'
+
+  Capybara.javascript_driver = :webkit
+
+  DatabaseCleaner.strategy = :transaction
 
 
   OmniAuth.config.test_mode = true
@@ -54,6 +60,26 @@ Spork.prefork do
     config.treat_symbols_as_metadata_keys_with_true_values = true
     config.filter_run :focus => true
     config.run_all_when_everything_filtered = true
+
+    config.before(:suite) do
+      DatabaseCleaner.strategy = :truncation
+    end
+    
+    config.before(:each) do
+      DatabaseCleaner.start
+    end
+    
+    config.after(:each) do
+      DatabaseCleaner.clean
+    end
+  end
+
+  def handle_js_confirm(accept=true)
+    page.evaluate_script "window.original_confirm_function = window.confirm"
+    page.evaluate_script "window.confirm = function(msg) { return #{!!accept}; }"
+    yield
+  ensure
+    page.evaluate_script "window.confirm = window.original_confirm_function"
   end
 
 end
