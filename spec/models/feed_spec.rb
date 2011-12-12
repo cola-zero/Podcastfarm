@@ -177,4 +177,24 @@ describe Feed do
       end
     end
   end
+
+  describe ".unregister_user method" do
+    subject { Feed.create( :url => url ) }
+    it { should respond_to(:unregister_user) }
+
+    let(:feed) { Feed.create( :url => url) }
+    let(:user) { Factory(:user)}
+    before do
+      feed.register_user user
+    end
+
+    it "should remove user from feed.users" do
+      feed.users.should eq [user]
+      user.feeds.should eq [feed]
+      feed.unregister_user(user)
+      feed.users.should eq []
+      user.feeds.should eq []
+    end
+
+  end
 end

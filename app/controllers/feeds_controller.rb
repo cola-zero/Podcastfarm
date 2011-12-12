@@ -76,7 +76,10 @@ class FeedsController < ApplicationController
   # DELETE /feeds/1.json
   def destroy
     @feed = Feed.find(params[:id])
-    @feed.destroy
+    @feed.unregister_user(current_user)
+    if @feed.users.empty?
+      @feed.destroy
+    end
 
     respond_to do |format|
       format.html { redirect_to feeds_url }

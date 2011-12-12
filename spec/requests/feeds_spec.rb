@@ -1,6 +1,9 @@
 require 'spec_helper'
 
 describe "Feeds" do
+  def valid_url
+    "file://#{URI.escape(File.join(File.dirname(File.expand_path(__FILE__, Dir.getwd)), "..", "fixtures", "feed.rss"))}"
+  end
   describe "GET /feeds" do
     it "should success" do
       visit feeds_path
@@ -48,9 +51,6 @@ describe "Feeds" do
   end
 
   describe "/feeds/new" do
-    def valid_url
-      { "url" => "file://#{URI.escape(File.join(File.dirname(File.expand_path(__FILE__, Dir.getwd)), "..", "fixtures", "feed.rss"))}" }
-    end
     before do
       visit '/auth/twitter'
     end
@@ -64,14 +64,14 @@ describe "Feeds" do
     context "when valid url is given" do
       it "should create new feeds" do
         visit new_feed_path
-        page.fill_in "feed_url", :with => valid_url["url"]
+        page.fill_in "feed_url", :with => valid_url
         page.click_button "Save"
         page.should have_content "Feed was successfully created."
       end
 
       it "should show users feed list" do
         visit new_feed_path
-        page.fill_in "feed_url", :with => valid_url["url"]
+        page.fill_in "feed_url", :with => valid_url
         page.click_button "Save"
         visit feeds_path
         page.should have_content "Example Feed"
@@ -85,6 +85,21 @@ describe "Feeds" do
         page.click_button "Save"
         page.should have_content "Url given url is invalid"
       end
+    end
+  end
+
+  describe "destroy feed" do
+    before do
+      visit '/auth/twitter'
+      visit new_feed_path
+      page.fill_in "feed_url", :with => valid_url
+      page.click_button "Save"
+      visit feeds_path
+    end
+
+    it "should delete feed" do
+      page.click_link "Destroy"
+      page.should_not have_content "Example Feed"
     end
   end
 end

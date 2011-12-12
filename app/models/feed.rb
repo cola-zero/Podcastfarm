@@ -26,6 +26,10 @@ class Feed < ActiveRecord::Base
     feed.users << [user] unless feed.users.find_by_id(user.id)
   end
 
+  def unregister_user(user)
+    self.users.delete(user)
+    user.feeds.delete(self)
+  end
   private
 
   def get_feed_infomation

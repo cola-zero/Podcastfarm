@@ -212,6 +212,26 @@ describe FeedsController do
         }.to change(Feed, :count).by(-1)
       end
 
+      it "should remove user's feeds" do
+        feed = Feed.create! valid_attributes
+        feed.register_user(controller.current_user)
+        controller.current_user.feeds.should eq [feed]
+        delete :destroy, :id => feed.id
+        controller.current_user.feeds.should be_empty
+      end
+
+      context "when another user subscribing the requested feed" do
+        it "should not destroys the requested feed" do
+          @different_user = Factory(:user)
+          feed = Feed.create! valid_attributes
+          feed.register_user(@different_user)
+          feed.register_user(@user)
+          expect {
+            delete :destroy, :id => feed.id
+          }.to change(Feed, :count).by(0)
+        end
+      end
+
       it "redirects to the feeds list" do
         feed = Feed.create! valid_attributes
         delete :destroy, :id => feed.id
