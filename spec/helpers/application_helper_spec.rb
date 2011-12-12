@@ -14,8 +14,8 @@ describe "ApplicationHelpers" do
 
     context "when user logged in" do
       it 'should return User' do
-        Factory(:user)
-        session[:user_id] = 1
+        user = Factory(:user)
+        session[:user_id] = user.id
         helper.current_user.should be_a(User)
       end
       
@@ -50,8 +50,8 @@ describe "ApplicationHelpers" do
 
     context "when signed in" do
       it "should return true" do
-        Factory(:user)
-        session[:user_id] = 1
+        user = Factory(:user)
+        session[:user_id] = user.id
         helper.signed_in?.should be_true
       end
     end
