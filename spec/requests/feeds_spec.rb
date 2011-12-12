@@ -88,7 +88,7 @@ describe "Feeds" do
     end
   end
 
-  describe "destroy feed" do
+  describe "destroy feed", :js => true do
     before do
       visit '/auth/twitter'
       visit new_feed_path
@@ -99,6 +99,7 @@ describe "Feeds" do
 
     it "should delete feed" do
       page.click_link "Destroy"
+      page.driver.browser.switch_to.alert.accept
       page.should_not have_content "Example Feed"
     end
   end
