@@ -26,26 +26,20 @@ describe FeedsController do
   def valid_attributes
     { :url => "file://#{URI.escape(File.join(File.dirname(File.expand_path(__FILE__, Dir.getwd)), "..", "fixtures", "feed.rss"))}" }
   end
+  context "when user signed in" do
+    before do
+      @user = Factory(:user)
+      controller.sign_in(@user)
+    end
 
-  before do
-    user = Factory(:user)
-    controller.sign_in(user)
-  end
-
-  describe "GET index" do
-    context "when user signed in" do
-      before do
-        @user = Factory(:user)
-        controller.sign_in(@user)
-      end
-      
+    describe "GET index" do
       it "assigns all feeds as @feeds" do
         feed = Feed.create! valid_attributes
         feed.register_user(@user)
         get :index
         assigns(:feeds).should eq([feed])
       end
-
+      
       it "should not assign another user's feed in @feeds" do
         feed = Feed.create! valid_attributes
         different_user = Factory(:user)
@@ -55,26 +49,188 @@ describe FeedsController do
       end
     end
 
-    context "when user does not signed in" do
-      before do
-        controller.sign_out
+    describe "GET show" do
+      it "assigns the requested feed as @feed" do
+        feed = Feed.create! valid_attributes
+        get :show, :id => feed.id
+        assigns(:feed).should eq(feed)
+      end
+    end
+
+    describe "GET new" do
+      it "assigns a new feed as @feed" do
+        get :new
+        assigns(:feed).should be_a_new(Feed)
+      end
+    end
+
+    describe "GET edit" do
+      it "assigns the requested feed as @feed" do
+        feed = Feed.create! valid_attributes
+        get :edit, :id => feed.id
+        assigns(:feed).should eq(feed)
+      end
+    end
+
+    describe "POST create" do
+      context "when user does not signed in" do
+        it "should redirect to signin path" do
+          controller.sign_out
+          post :create, :feed => valid_attributes
+          response.should redirect_to "/auth/twitter"
+        end
       end
 
+      describe "with valid params" do
+        it "creates a new Feed" do
+          expect {
+            post :create, :feed => valid_attributes
+          }.to change(Feed, :count).by(1)
+        end
+
+        describe "duplicate feed" do
+          it "should not create new feed" do
+            post :create, :feed => valid_attributes
+            expect { 
+              post :create, :feed => valid_attributes
+            }.to change(Feed, :count).by(0)
+          end
+          context "when other user's feeds are exist" do
+            before do
+              different_user = Factory(:user)
+              controller.sign_in(different_user)
+              post :create, :feed => valid_attributes
+            end
+            it "should not create new feed" do
+              controller.sign_in(User.first)
+              expect { 
+                post :create, :feed => valid_attributes
+              }.to change(Feed, :count).by(0)
+            end
+
+            it "should register to current_user" do
+              controller.sign_in(User.first)
+              post :create, :feed => valid_attributes
+              feed = Feed.find_by_url(valid_attributes[:url])
+              feed.users.should eq User.all.reverse
+              controller.current_user.feeds.should eq [feed]
+            end
+          end
+        end
+
+
+        it "register feed to current user" do
+          post :create, :feed => valid_attributes
+          feed = Feed.find_by_url(valid_attributes[:url])
+          feed.users.should eq [controller.current_user]
+          controller.current_user.feeds.should eq [feed]
+        end
+
+        it "assigns a newly created feed as @feed" do
+          post :create, :feed => valid_attributes
+          assigns(:feed).should be_a(Feed)
+          assigns(:feed).should be_persisted
+        end
+
+        it "redirects to the created feed" do
+          post :create, :feed => valid_attributes
+          response.should redirect_to(Feed.last)
+        end
+      end
+
+      describe "with invalid params" do
+        it "assigns a newly created but unsaved feed as @feed" do
+          # Trigger the behavior that occurs when invalid params are submitted
+          Feed.any_instance.stub(:save).and_return(false)
+          post :create, :feed => {}
+          assigns(:feed).should be_a_new(Feed)
+        end
+
+        it "re-renders the 'new' template" do
+          # Trigger the behavior that occurs when invalid params are submitted
+          Feed.any_instance.stub(:save).and_return(false)
+          post :create, :feed => {}
+          response.should render_template("new")
+        end
+
+        it "do not register feed to current user" do
+          post :create, :feed => {}
+          controller.current_user.feeds.should eq []
+        end
+      end
+    end
+
+    describe "PUT update" do
+      describe "with valid params" do
+        it "updates the requested feed" do
+          feed = Feed.create! valid_attributes
+          # Assuming there are no other feeds in the database, this
+          # specifies that the Feed created on the previous line
+          # receives the :update_attributes message with whatever params are
+          # submitted in the request.
+          Feed.any_instance.should_receive(:update_attributes).with({'these' => 'params'})
+          put :update, :id => feed.id, :feed => {'these' => 'params'}
+        end
+
+        it "assigns the requested feed as @feed" do
+          feed = Feed.create! valid_attributes
+          put :update, :id => feed.id, :feed => valid_attributes
+          assigns(:feed).should eq(feed)
+        end
+
+        it "redirects to the feed" do
+          feed = Feed.create! valid_attributes
+          put :update, :id => feed.id, :feed => valid_attributes
+          response.should redirect_to(feed)
+        end
+      end
+
+      describe "with invalid params" do
+        it "assigns the feed as @feed" do
+          feed = Feed.create! valid_attributes
+          # Trigger the behavior that occurs when invalid params are submitted
+          Feed.any_instance.stub(:save).and_return(false)
+          put :update, :id => feed.id, :feed => {}
+          assigns(:feed).should eq(feed)
+        end
+
+        it "re-renders the 'edit' template" do
+          feed = Feed.create! valid_attributes
+          # Trigger the behavior that occurs when invalid params are submitted
+          Feed.any_instance.stub(:save).and_return(false)
+          put :update, :id => feed.id, :feed => {}
+          response.should render_template("edit")
+        end
+      end
+    end
+
+    describe "DELETE destroy" do
+      it "destroys the requested feed" do
+        feed = Feed.create! valid_attributes
+        expect {
+          delete :destroy, :id => feed.id
+        }.to change(Feed, :count).by(-1)
+      end
+
+      it "redirects to the feeds list" do
+        feed = Feed.create! valid_attributes
+        delete :destroy, :id => feed.id
+        response.should redirect_to(feeds_url)
+      end
+    end
+  end
+
+
+
+  context "when user does not signed in" do
+    describe "GET index" do
       it "should redirect to signin path" do
         get :index
         response.should redirect_to "/auth/twitter"
       end
     end
-  end
 
-  describe "GET show" do
-    it "assigns the requested feed as @feed" do
-      feed = Feed.create! valid_attributes
-      get :show, :id => feed.id
-      assigns(:feed).should eq(feed)
-    end
-
-    context "when user does not signed in" do
+    describe "GET show" do
       it "should redirect to signin path" do
         controller.sign_out
         feed = Feed.create! valid_attributes
@@ -82,31 +238,16 @@ describe FeedsController do
         response.should redirect_to "/auth/twitter"
       end
     end
-  end
 
-  describe "GET new" do
-    it "assigns a new feed as @feed" do
-      get :new
-      assigns(:feed).should be_a_new(Feed)
-    end
-
-    context "when user does not signed in" do
+    describe "GET new" do
       it "should redirect to signin path" do
         controller.sign_out
         get :new
         response.should redirect_to "/auth/twitter"
       end
     end
-  end
 
-  describe "GET edit" do
-    it "assigns the requested feed as @feed" do
-      feed = Feed.create! valid_attributes
-      get :edit, :id => feed.id
-      assigns(:feed).should eq(feed)
-    end
-
-    context "when user does not signed in" do
+    describe "GET edit" do
       it "should redirect to signin path" do
         controller.sign_out
         feed = Feed.create! valid_attributes
@@ -114,10 +255,8 @@ describe FeedsController do
         response.should redirect_to "/auth/twitter"
       end
     end
-  end
 
-  describe "POST create" do
-    context "when user does not signed in" do
+    describe "POST create" do
       it "should redirect to signin path" do
         controller.sign_out
         post :create, :feed => valid_attributes
@@ -125,142 +264,10 @@ describe FeedsController do
       end
     end
 
-    describe "with valid params" do
-      it "creates a new Feed" do
-        expect {
-          post :create, :feed => valid_attributes
-        }.to change(Feed, :count).by(1)
-      end
-
-      describe "duplicate feed" do
-        it "should not create new feed" do
-          post :create, :feed => valid_attributes
-          expect { 
-            post :create, :feed => valid_attributes
-          }.to change(Feed, :count).by(0)
-        end
-        context "when other user's feeds are exist" do
-          before do
-            different_user = Factory(:user)
-            controller.sign_in(different_user)
-            post :create, :feed => valid_attributes
-          end
-          it "should not create new feed" do
-            controller.sign_in(User.first)
-            expect { 
-              post :create, :feed => valid_attributes
-            }.to change(Feed, :count).by(0)
-          end
-
-          it "should register to current_user" do
-            controller.sign_in(User.first)
-            post :create, :feed => valid_attributes
-            feed = Feed.find_by_url(valid_attributes[:url])
-            feed.users.should eq User.all.reverse
-            controller.current_user.feeds.should eq [feed]
-          end
-        end
-      end
-
-
-      it "register feed to current user" do
-        post :create, :feed => valid_attributes
-        feed = Feed.find_by_url(valid_attributes[:url])
-        feed.users.should eq [controller.current_user]
-        controller.current_user.feeds.should eq [feed]
-      end
-
-      it "assigns a newly created feed as @feed" do
-        post :create, :feed => valid_attributes
-        assigns(:feed).should be_a(Feed)
-        assigns(:feed).should be_persisted
-      end
-
-      it "redirects to the created feed" do
-        post :create, :feed => valid_attributes
-        response.should redirect_to(Feed.last)
-      end
+    describe "PUT update" do
     end
 
-    describe "with invalid params" do
-      it "assigns a newly created but unsaved feed as @feed" do
-        # Trigger the behavior that occurs when invalid params are submitted
-        Feed.any_instance.stub(:save).and_return(false)
-        post :create, :feed => {}
-        assigns(:feed).should be_a_new(Feed)
-      end
-
-      it "re-renders the 'new' template" do
-        # Trigger the behavior that occurs when invalid params are submitted
-        Feed.any_instance.stub(:save).and_return(false)
-        post :create, :feed => {}
-        response.should render_template("new")
-      end
-
-      it "do not register feed to current user" do
-        post :create, :feed => {}
-        controller.current_user.feeds.should eq []
-      end
+    describe "DELETE destroy" do
     end
   end
-
-  describe "PUT update" do
-    describe "with valid params" do
-      it "updates the requested feed" do
-        feed = Feed.create! valid_attributes
-        # Assuming there are no other feeds in the database, this
-        # specifies that the Feed created on the previous line
-        # receives the :update_attributes message with whatever params are
-        # submitted in the request.
-        Feed.any_instance.should_receive(:update_attributes).with({'these' => 'params'})
-        put :update, :id => feed.id, :feed => {'these' => 'params'}
-      end
-
-      it "assigns the requested feed as @feed" do
-        feed = Feed.create! valid_attributes
-        put :update, :id => feed.id, :feed => valid_attributes
-        assigns(:feed).should eq(feed)
-      end
-
-      it "redirects to the feed" do
-        feed = Feed.create! valid_attributes
-        put :update, :id => feed.id, :feed => valid_attributes
-        response.should redirect_to(feed)
-      end
-    end
-
-    describe "with invalid params" do
-      it "assigns the feed as @feed" do
-        feed = Feed.create! valid_attributes
-        # Trigger the behavior that occurs when invalid params are submitted
-        Feed.any_instance.stub(:save).and_return(false)
-        put :update, :id => feed.id, :feed => {}
-        assigns(:feed).should eq(feed)
-      end
-
-      it "re-renders the 'edit' template" do
-        feed = Feed.create! valid_attributes
-        # Trigger the behavior that occurs when invalid params are submitted
-        Feed.any_instance.stub(:save).and_return(false)
-        put :update, :id => feed.id, :feed => {}
-        response.should render_template("edit")
-      end
-    end
-  end
-
-  describe "DELETE destroy" do
-    it "destroys the requested feed" do
-      feed = Feed.create! valid_attributes
-      expect {
-        delete :destroy, :id => feed.id
-      }.to change(Feed, :count).by(-1)
-    end
-
-    it "redirects to the feeds list" do
-      feed = Feed.create! valid_attributes
-      delete :destroy, :id => feed.id
-      response.should redirect_to(feeds_url)
-    end
-  end
-
 end
