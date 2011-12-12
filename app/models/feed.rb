@@ -15,7 +15,7 @@ class Feed < ActiveRecord::Base
   validates :url, :presence => true, :uniqueness => true
   validate :url_is_valid
 
-  before_validation :get_feed_infomation
+  before_create :get_feed_infomation
 
   has_many :subscriptions
   has_many :users, :through => :subscriptions
