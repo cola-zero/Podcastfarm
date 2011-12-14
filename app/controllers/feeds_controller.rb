@@ -58,19 +58,19 @@ class FeedsController < ApplicationController
 
   # PUT /feeds/1
   # PUT /feeds/1.json
-  def update
-    @feed = Feed.find(params[:id])
+  # def update
+  #   @feed = Feed.find(params[:id])
 
-    respond_to do |format|
-      if @feed.update_attributes(params[:feed])
-        format.html { redirect_to @feed, notice: 'Feed was successfully updated.' }
-        format.json { head :ok }
-      else
-        format.html { render action: "edit" }
-        format.json { render json: @feed.errors, status: :unprocessable_entity }
-      end
-    end
-  end
+  #   respond_to do |format|
+  #     if @feed.update_attributes(params[:feed])
+  #       format.html { redirect_to @feed, notice: 'Feed was successfully updated.' }
+  #       format.json { head :ok }
+  #     else
+  #       format.html { render action: "edit" }
+  #       format.json { render json: @feed.errors, status: :unprocessable_entity }
+  #     end
+  #   end
+  # end
 
   # DELETE /feeds/1
   # DELETE /feeds/1.json
