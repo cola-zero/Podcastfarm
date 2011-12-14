@@ -104,4 +104,17 @@ describe "Feeds" do
       end
     end
   end
+
+  describe "GET /feeds/1" do
+    it "should show title and url" do
+      visit '/auth/twitter'
+      visit new_feed_path
+      page.fill_in "feed_url", :with => valid_url
+      page.click_button "Save"
+      visit feeds_path
+      page.click_link "Show"
+      page.should have_content "Example Feed"
+      page.should have_content Feed.find_by_title("Example Feed").url
+    end
+  end
 end
