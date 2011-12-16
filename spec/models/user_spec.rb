@@ -14,7 +14,7 @@ require 'spec_helper'
 
 describe User do
   describe "attributes" do
-    let(:attr) { { 
+    let(:attr) { {
         'name'     => 'こーら',
         'nickname' => 'cola_zero'
       } }
@@ -41,7 +41,7 @@ describe User do
 
   describe 'authorization assosiation' do
     let(:user) { User.new() }
- 
+
     it 'should respond to #authorizations' do
       user.should respond_to(:authorization)
     end
@@ -112,7 +112,7 @@ describe User do
         end
       end
     end
-    
+
   end
 
   describe 'create_from_hash method' do
@@ -146,7 +146,7 @@ describe User do
       end
     end
   end
-  
+
   describe "Feed association" do
     let(:auth) { { 'provider' => 'twitter', 'uid' => 'asdfg',
         'info' => { 'name' => 'こーら', 'nickname' => 'cola_zero'} } }

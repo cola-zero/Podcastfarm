@@ -15,7 +15,7 @@ require 'spec_helper'
 
 describe Authorization do
   describe "attributes" do
-    let(:attr) { { 
+    let(:attr) { {
         :provider => 'twitter',
         :uid => 'asdfg',
         :user_id => 42

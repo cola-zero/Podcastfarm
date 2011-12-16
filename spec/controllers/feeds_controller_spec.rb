@@ -39,7 +39,7 @@ describe FeedsController do
         get :index
         assigns(:feeds).should eq([feed])
       end
-      
+
       it "should not assign another user's feed in @feeds" do
         feed = Feed.create! valid_attributes
         different_user = Factory(:user)
@@ -91,7 +91,7 @@ describe FeedsController do
         describe "duplicate feed" do
           it "should not create new feed" do
             post :create, :feed => valid_attributes
-            expect { 
+            expect {
               post :create, :feed => valid_attributes
             }.to change(Feed, :count).by(0)
           end
@@ -103,7 +103,7 @@ describe FeedsController do
             end
             it "should not create new feed" do
               controller.sign_in(User.first)
-              expect { 
+              expect {
                 post :create, :feed => valid_attributes
               }.to change(Feed, :count).by(0)
             end

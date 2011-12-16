@@ -5,7 +5,7 @@ describe "ApplicationHelpers" do
       it "should return nil when not logged in" do
         helper.current_user.should be_nil
       end
-      
+
       it 'should be nil when session[:user_id] is not set' do
         Factory(:user)
         helper.current_user.should be_nil
@@ -18,7 +18,7 @@ describe "ApplicationHelpers" do
         session[:user_id] = user.id
         helper.current_user.should be_a(User)
       end
-      
+
       it 'should return right User' do
         user = Factory(:user)
         session[:user_id] = user.id

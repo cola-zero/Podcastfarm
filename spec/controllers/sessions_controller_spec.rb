@@ -12,16 +12,16 @@ describe SessionsController do
 
     describe 'login with twitter using omniauth' do
       context 'when success' do
-        before do 
+        before do
           OmniAuth.config.mock_auth[:twitter] = {
             'provider' => 'twitter',
             'uid' => '123545',
             'info' => { 'nickname' => 'cola_zero',
               'name' => 'こーら'}
           }
-          request.env["omniauth.auth"] = OmniAuth.config.mock_auth[:twitter] 
+          request.env["omniauth.auth"] = OmniAuth.config.mock_auth[:twitter]
         end
-        
+
         it 'assign @current_user' do
           get 'create'
           assigns(:current_user).should be_a(User)
@@ -63,7 +63,7 @@ describe SessionsController do
           'info' => { 'nickname' => 'cola_zero',
             'name' => 'こーら'}
           }
-        request.env["omniauth.auth"] = OmniAuth.config.mock_auth[:twitter] 
+        request.env["omniauth.auth"] = OmniAuth.config.mock_auth[:twitter]
       end
 
       it 'should be "Sign in."' do
@@ -71,7 +71,7 @@ describe SessionsController do
         controller.flash[:notice].should == 'Sign in.'
       end
     end
-    
+
   end
 
   describe "DELETE 'destroy'" do
