@@ -50,7 +50,7 @@ class FeedsController < ApplicationController
         format.html { redirect_to @feed, notice: 'Feed was successfully created.' }
         format.json { render json: @feed, status: :created, location: @feed }
       else
-        format.html { render action: "new" }
+        format.html { render "new" }
         format.json { render json: @feed.errors, status: :unprocessable_entity }
       end
     end
