@@ -4,8 +4,8 @@ Podcastfarm::Application.routes.draw do
   match 'signout' => "sessions#destroy", :as => :signout
 
   match 'auth/:provider/callback' => "sessions#create"
-  resource 'sessions'
-  resources "feeds"
+  resource 'sessions', :only => [:create, :destroy]
+  resources "feeds", :only => [:show, :new, :create, :index, :destroy]
 
   root :to => "pages#home"
   # The priority is based upon order of creation:

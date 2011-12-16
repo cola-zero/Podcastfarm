@@ -64,13 +64,13 @@ describe FeedsController do
       end
     end
 
-    describe "GET edit" do
-      it "assigns the requested feed as @feed" do
-        feed = Feed.create! valid_attributes
-        get :edit, :id => feed.id
-        assigns(:feed).should eq(feed)
-      end
-    end
+    # describe "GET edit" do
+    #   it "assigns the requested feed as @feed" do
+    #     feed = Feed.create! valid_attributes
+    #     get :edit, :id => feed.id
+    #     assigns(:feed).should eq(feed)
+    #   end
+    # end
 
     describe "POST create" do
       context "when user does not signed in" do
@@ -267,25 +267,25 @@ describe FeedsController do
       end
     end
 
-    describe "GET edit" do
-      it "should redirect to signin path" do
-        controller.sign_out
-        feed = Feed.create! valid_attributes
-        get :edit, :id => feed.id
-        response.should redirect_to "/auth/twitter"
-      end
-    end
+    # describe "GET edit" do
+    #   it "should redirect to signin path" do
+    #     controller.sign_out
+    #     feed = Feed.create! valid_attributes
+    #     get :edit, :id => feed.id
+    #     response.should redirect_to "/auth/twitter"
+    #   end
+    # end
 
-    describe "POST create" do
-      it "should redirect to signin path" do
-        controller.sign_out
-        post :create, :feed => valid_attributes
-        response.should redirect_to "/auth/twitter"
-      end
-    end
+    # describe "POST create" do
+    #   it "should redirect to signin path" do
+    #     controller.sign_out
+    #     post :create, :feed => valid_attributes
+    #     response.should redirect_to "/auth/twitter"
+    #   end
+    # end
 
-    describe "PUT update" do
-    end
+    # describe "PUT update" do
+    # end
 
     describe "DELETE destroy" do
     end

@@ -35,9 +35,9 @@ class FeedsController < ApplicationController
   end
 
   # GET /feeds/1/edit
-  def edit
-    @feed = Feed.find(params[:id])
-  end
+  # def edit
+  #   @feed = Feed.find(params[:id])
+  # end
 
   # POST /feeds
   # POST /feeds.json
@@ -56,7 +56,7 @@ class FeedsController < ApplicationController
     end
   end
 
-  # PUT /feeds/1
+  # put /feeds/1
   # PUT /feeds/1.json
   # def update
   #   @feed = Feed.find(params[:id])
