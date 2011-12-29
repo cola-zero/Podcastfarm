@@ -34,13 +34,6 @@ describe Feed do
       end
     end
 
-    context "when url is 404" do
-      let(:url) { not_found_url }
-      it "should not create entry" do
-        Feed.count.should == 0
-      end
-    end
-
     context "when url is duplicated" do
       it "should not save to db" do
         feed.save
@@ -91,14 +84,6 @@ describe Feed do
           feed.description.should be_empty
         end
       end
-    end
-  end
-
-  describe "callback methods" do
-    it 'should set title and description' do
-      feed.save
-      feed.title.should == "Example Feed"
-      feed.description == "This is test feed."
     end
   end
 

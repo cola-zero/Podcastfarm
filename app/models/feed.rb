@@ -15,8 +15,6 @@ class Feed < ActiveRecord::Base
   validates :url, :presence => true, :uniqueness => true
   validate :url_is_valid
 
-  before_create :get_feed_infomation
-
   has_many :subscriptions
   has_many :users, :through => :subscriptions
 
@@ -30,7 +28,6 @@ class Feed < ActiveRecord::Base
     self.users.delete(user)
     user.feeds.delete(self)
   end
-  private
 
   def get_feed_infomation
     @feed_parser = make_parser
@@ -42,6 +39,9 @@ class Feed < ActiveRecord::Base
       self.description ||= ""
     end
   end
+
+
+  private
 
   def make_parser
     Feedzirra::Feed.fetch_and_parse(self.url)
