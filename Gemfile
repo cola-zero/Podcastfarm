@@ -22,9 +22,9 @@ gem 'twitter-bootstrap-rails', :git => 'git://github.com/seyhunak/twitter-bootst
 gem 'feedzirra', '~> 0.1.1', :git => 'git://github.com/pauldix/feedzirra.git'
 
 group :development, :test do
-  gem 'rspec-rails', '~> 2.7.0'
+  gem 'rspec-rails', '~> 2.8.0'
   gem 'capybara-webkit'
-  gem 'launchy'  
+  gem 'launchy'
   gem 'guard-bundler'
   gem 'guard-rspec'
   gem 'guard-rails'
