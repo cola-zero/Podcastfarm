@@ -11,16 +11,12 @@ Spork.prefork do
   # This file is copied to spec/ when you run 'rails generate rspec:install'
   ENV["RAILS_ENV"] ||= 'test'
   require File.expand_path("../../config/environment", __FILE__)
-  require 'database_cleaner'
   require 'rspec/rails'
   require 'rspec/autorun'
   require 'capybara/rspec'
   require 'capybara/rails'
 
   Capybara.javascript_driver = :webkit
-
-  DatabaseCleaner.strategy = :transaction
-
 
   OmniAuth.config.test_mode = true
   OmniAuth.config.mock_auth[:twitter] = {
@@ -60,18 +56,6 @@ Spork.prefork do
     config.treat_symbols_as_metadata_keys_with_true_values = true
     config.filter_run :focus => true
     config.run_all_when_everything_filtered = true
-
-    config.before(:suite) do
-      DatabaseCleaner.strategy = :truncation
-    end
-
-    config.before(:each) do
-      DatabaseCleaner.start
-    end
-
-    config.after(:each) do
-      DatabaseCleaner.clean
-    end
   end
 
   def handle_js_confirm(accept=true)
@@ -117,3 +101,16 @@ end
 #
 # These instructions should self-destruct in 10 seconds.  If they don't, feel
 # free to delete them.
+
+class ActiveRecord::Base
+  mattr_accessor :shared_connection
+  @@shared_connection = nil
+
+  def self.connection
+    @@shared_connection || retrieve_connection
+  end
+end
+
+# Forces all threads to share the same connection. This works on
+# Capybara because it starts the web server in a thread.
+ActiveRecord::Base.shared_connection = ActiveRecord::Base.connection

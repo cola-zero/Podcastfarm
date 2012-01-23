@@ -37,7 +37,6 @@ group :development, :test do
   gem 'simplecov', :require => false
   gem 'factory_girl', '~> 2.2.0'
   gem 'factory_girl_rails', '~>1.3.0'
-  gem 'database_cleaner', '~> 0.6.7'
   gem 'omniauth', '~> 1.0.0', :git => 'git://github.com/intridea/omniauth.git'
   gem 'omniauth-contrib', :git => 'git://github.com/intridea/omniauth-contrib.git'
   gem 'omniauth-twitter'
