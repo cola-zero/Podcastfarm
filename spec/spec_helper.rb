@@ -66,6 +66,8 @@ Spork.prefork do
     page.evaluate_script "window.confirm = window.original_confirm_function"
   end
 
+  Rails.logger.level = 4
+
 end
 
 Spork.each_run do
