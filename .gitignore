@@ -7,3 +7,4 @@ coverage
 vendor/bundle
 .powenv
 rails_best_practices_output.html
+bundler_stubs
