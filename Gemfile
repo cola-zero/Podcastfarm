@@ -35,8 +35,7 @@ group :development, :test do
   gem 'growl'
   gem 'annotate', :git => 'git://github.com/ctran/annotate_models.git'
   gem 'simplecov', :require => false
-  gem 'factory_girl', '~> 2.2.0'
-  gem 'factory_girl_rails', '~>1.3.0'
+  gem 'factory_girl_rails', '~>1.6.0'
   gem 'omniauth', '~> 1.0.0', :git => 'git://github.com/intridea/omniauth.git'
   gem 'omniauth-contrib', :git => 'git://github.com/intridea/omniauth-contrib.git'
   gem 'omniauth-twitter'
