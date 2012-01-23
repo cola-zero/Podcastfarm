@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe "feeds/show.html.haml" do
+describe "feeds/show" do
   before(:each) do
     @feed = assign(:feed, stub_model(Feed))
   end

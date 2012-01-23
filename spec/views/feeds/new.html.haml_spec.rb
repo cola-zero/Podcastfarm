@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe "feeds/new.html.haml" do
+describe "feeds/new" do
   before(:each) do
     assign(:feed, stub_model(Feed).as_new_record)
   end
