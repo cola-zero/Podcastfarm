@@ -6,17 +6,17 @@
     = javascript_include_tag "application"
     = csrf_meta_tags
   %body
-    %div.topbar
-      %div.topbar-inner
+    %div.navbar
+      %div.navbar-inner
         %div.container
           %a.brand Podcast Farm
           %ul.nav
             %li.active= link_to "Home", :root
           %ul{"class" => ["nav", "secondary-nav"]}
             - if signed_in?
-              %li{"class" => "dropdown", "data-dropdown" => "dropdown"}
-                = link_to current_user.nickname, "/#", :class => "dropdown-toggle"
-                %ul.menu-dropdown
+              %li{"class" => "dropdown"}
+                = link_to current_user_for_dropdown.html_safe, "/#", :class => "dropdown-toggle", "data-toggle" => "dropdown"
+                %ul.dropdown-menu
                   %li= link_to "Sign Out", :signout
             - else
               %li= link_to "Sign in", "/auth/twitter"
