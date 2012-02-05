@@ -18,13 +18,21 @@ Spork.prefork do
 
   Capybara.javascript_driver = :webkit
 
-  OmniAuth.config.test_mode = true
-  OmniAuth.config.mock_auth[:twitter] = {
-    'provider' => 'twitter',
-    'uid' => '123545',
-    'info' => { 'nickname' => 'cola_zero',
-      'name' => 'こーら'}
-  }
+  def set_omniauth_mock( options = nil)
+    OmniAuth.config.test_mode = true
+    if options == nil
+      OmniAuth.config.mock_auth[:twitter] = {
+        'provider' => 'twitter',
+        'uid' => '123545',
+        'info' => { 'nickname' => 'cola_zero',
+          'name' => 'こーら'}
+      }
+    elsif options[:invalid] == true
+      OmniAuth.config.mock_auth[:twitter] = :invalid_credentials
+    end
+  end
+
+  set_omniauth_mock
 
   # Requires supporting ruby files with custom matchers and macros, etc,
   # in spec/support/ and its subdirectories.

@@ -12,13 +12,8 @@ describe SessionsController do
 
     describe 'login with twitter using omniauth' do
       context 'when success' do
-        before do
-          OmniAuth.config.mock_auth[:twitter] = {
-            'provider' => 'twitter',
-            'uid' => '123545',
-            'info' => { 'nickname' => 'cola_zero',
-              'name' => 'こーら'}
-          }
+        before (:each) do
+          set_omniauth_mock
           request.env["omniauth.auth"] = OmniAuth.config.mock_auth[:twitter]
         end
 
@@ -39,8 +34,8 @@ describe SessionsController do
       end
 
       context 'when fail' do
-        before do
-          OmniAuth.config.mock_auth[:twitter] = :invalid_credentials
+        before (:each) do
+          set_omniauth_mock :invalid => true
         end
         it 'assign @current_user to nil' do
           get 'create'
@@ -56,13 +51,8 @@ describe SessionsController do
 
   describe "flash messagegs" do
     context "when user sign in" do
-      before do
-        OmniAuth.config.mock_auth[:twitter] = {
-          'provider' => 'twitter',
-          'uid' => '123545',
-          'info' => { 'nickname' => 'cola_zero',
-            'name' => 'こーら'}
-          }
+      before (:each) do
+        set_omniauth_mock
         request.env["omniauth.auth"] = OmniAuth.config.mock_auth[:twitter]
       end
 
@@ -75,7 +65,7 @@ describe SessionsController do
   end
 
   describe "DELETE 'destroy'" do
-    before do
+    before (:each) do
       controller.sign_in Factory(:user)
     end
     it 'should sign a user out' do

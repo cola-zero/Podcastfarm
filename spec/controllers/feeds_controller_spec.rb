@@ -27,7 +27,7 @@ describe FeedsController do
     { :url => "file://#{URI.escape(File.join(File.dirname(File.expand_path(__FILE__, Dir.getwd)), "..", "fixtures", "feed.rss"))}" }
   end
   context "when user signed in" do
-    before do
+    before (:each) do
       @user = Factory(:user)
       controller.sign_in(@user)
     end
@@ -96,7 +96,7 @@ describe FeedsController do
             }.to change(Feed, :count).by(0)
           end
           context "when other user's feeds are exist" do
-            before do
+            before (:each) do
               different_user = Factory(:user)
               controller.sign_in(different_user)
               post :create, :feed => valid_attributes

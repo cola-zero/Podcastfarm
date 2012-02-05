@@ -96,7 +96,7 @@ describe Feed do
     end
 
     context "when url is exist" do
-      before do
+      before (:each) do
         feed.save
       end
       it "should return exist feed" do
@@ -118,7 +118,7 @@ describe Feed do
       let(:user) { Factory(:user) }
       let(:feed) { Feed.create( :url => url )}
 
-      before do
+      before (:each) do
         feed.register_user(user)
       end
 
@@ -169,7 +169,7 @@ describe Feed do
 
     let(:feed) { Feed.create( :url => url) }
     let(:user) { Factory(:user)}
-    before do
+    before (:each) do
       feed.register_user user
     end
 

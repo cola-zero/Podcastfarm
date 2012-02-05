@@ -1,9 +1,19 @@
+# -*- coding: utf-8 -*-
 require 'spec_helper'
 
 describe "Feeds" do
   def valid_url
     "file://#{URI.escape(File.join(File.dirname(File.expand_path(__FILE__, Dir.getwd)), "..", "fixtures", "feed.rss"))}"
   end
+
+  def sign_in
+    visit "/auth/twitter"
+  end
+
+  before(:each)do
+    set_omniauth_mock
+  end
+
   describe "GET /feeds" do
     it "should success" do
       visit feeds_path
@@ -11,13 +21,8 @@ describe "Feeds" do
       page.should have_content "Podcastfarm"
     end
 
-    it "should redirect sign in page and should sign in when not logged in" do
-      visit feeds_path
-      page.should have_content "cola_zero"
-    end
-
     it "should show feeds" do
-      visit "/auth/twitter"
+      sign_in
       feed = Factory(:feed)
       feed.register_user(User.find_by_nickname("cola_zero"))
       visit feeds_path
@@ -25,7 +30,7 @@ describe "Feeds" do
     end
 
     it "should show second feeds" do
-      visit "/auth/twitter"
+      sign_in
       user = User.find_by_nickname("cola_zero")
       feed1 = Factory(:feed)
       feed2 = Factory(:feed)
@@ -37,7 +42,7 @@ describe "Feeds" do
     end
 
     it "should not show different users feeds" do
-      visit "/auth/twitter"
+      sign_in
       user = User.find_by_nickname("cola_zero")
       different_user = Factory(:user)
       feed1 = Factory(:feed)
@@ -51,7 +56,7 @@ describe "Feeds" do
   end
 
   describe "/feeds/new" do
-    before do
+    before (:each) do
       visit '/auth/twitter'
     end
 
@@ -89,8 +94,8 @@ describe "Feeds" do
   end
 
   describe "destroy feed", :js => true do
-    before do
-      visit '/auth/twitter'
+    before (:each) do
+      sign_in
       visit new_feed_path
       page.fill_in "feed_url", :with => valid_url
       page.click_button "Save"
@@ -107,7 +112,7 @@ describe "Feeds" do
 
   describe "GET /feeds/1" do
     it "should show title and url" do
-      visit '/auth/twitter'
+      sign_in
       visit new_feed_path
       page.fill_in "feed_url", :with => valid_url
       page.click_button "Save"

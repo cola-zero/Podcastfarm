@@ -58,7 +58,7 @@ describe "ApplicationHelpers" do
   end
 
   describe "sign_out"  do
-    before do
+    before (:each) do
       helper.sign_in Factory(:user)
     end
 
