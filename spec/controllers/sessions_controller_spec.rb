@@ -81,4 +81,20 @@ describe SessionsController do
       end
     end
   end
+
+  describe "GET 'failure'" do
+    it "should be redirect to root_path" do
+      get 'failure'
+      response.should redirect_to(root_path)
+    end
+
+    describe "flash messages" do
+      it 'should show error messages' do
+        params = { :message => 'invalid_credentials' }
+        controller.stub!(:params).and_return ({ :message => 'invalid_credentials'})
+        get 'failure'
+        controller.flash[:notice].should == params[:message]
+      end
+    end
+  end
 end
