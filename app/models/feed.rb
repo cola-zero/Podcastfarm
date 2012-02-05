@@ -12,6 +12,9 @@
 
 class Feed < ActiveRecord::Base
   include ApplicationHelper
+
+  attr_accessible :url
+
   validates :url, :presence => true, :uniqueness => true
   validate :url_is_valid
 

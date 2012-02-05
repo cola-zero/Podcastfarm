@@ -4,4 +4,4 @@
 # If you change this key, all old signed cookies will become invalid!
 # Make sure the secret is at least 30 characters and all random,
 # no regular words or you'll be exposed to dictionary attacks.
-Podcastfarm::Application.config.secret_token = '012d01d1c8353c122ddd4fffd6f5c59a7f6ec9d3017deaf61cfdf86dc4ee517efe22e926478d5b17f4c43bf8e9626487625cb279d3829d60d29a2b5cb733617f'
+Podcastfarm::Application.config.secret_token = 'd710c76e342f8834144f349b1dc267f247eebf31146323a706198433376bdbfbd7c2f86a96b165a1eefe17b65b849b5996b5761f3dc0fc07471fd3cfabcef254'

@@ -16,7 +16,7 @@ guard 'spork', :cucumber_env => { 'RAILS_ENV' => 'test' }, :rspec_env => { 'RAIL
   watch('test/test_helper.rb')
 end
 
-guard 'rspec', :version => 2, :cli => '--drb', :all_on_start => true, :all_after_pass => true do
+guard 'rspec', :version => 2, :cli => '--drb', :all_on_start => false, :all_after_pass => false do
   watch(%r{^spec/.+_spec\.rb$})
   watch(%r{^lib/(.+)\.rb$})     { |m| "spec/lib/#{m[1]}_spec.rb" }
   watch('spec/spec_helper.rb')  { "spec" }
@@ -34,4 +34,3 @@ guard 'rspec', :version => 2, :cli => '--drb', :all_on_start => true, :all_after
   # Capybara request specs
   watch(%r{^app/views/(.+)/.*\.(erb|haml)$})          { |m| "spec/requests/#{m[1]}_spec.rb" }
 end
-

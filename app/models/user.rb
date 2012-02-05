@@ -10,6 +10,9 @@
 #
 
 class User < ActiveRecord::Base
+
+  attr_accessible :name, :nickname
+
   validates :name, :presence => true
   validates :nickname, :presence => true
 

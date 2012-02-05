@@ -10,6 +10,10 @@
 #
 
 class Subscription < ActiveRecord::Base
+
+  attr_accessible :user_id
+  attr_accessible :feed_id
+
   belongs_to :user
   belongs_to :feed
 end
