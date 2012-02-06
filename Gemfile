@@ -31,7 +31,7 @@ group :development, :test do
   gem 'spin'
   gem 'guard-spork'
   gem 'rb-fsevent'
-  gem 'spork', '>= 0.9.0.rc9'
+  gem 'spork-rails'
   gem 'growl'
   gem 'annotate', :git => 'git://github.com/ctran/annotate_models.git'
   gem 'simplecov', :require => false

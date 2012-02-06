@@ -1,10 +1,15 @@
 # -*- coding: utf-8 -*-
 require 'rubygems'
 require 'spork'
-require 'simplecov'
 
 Spork.prefork do
-  SimpleCov.start 'rails'
+  if(ENV["RUN_COVERAGE"])
+    require 'simplecov'
+    SimpleCov.start 'rails' do
+      add_filter "/spec/"
+    end
+    puts "Running coverage tool\n"
+  end
   # Loading more in this block will cause your tests to run faster. However,
   # if you change any configuration or code from libraries loaded here, you'll
   # need to restart spork for it take effect.
