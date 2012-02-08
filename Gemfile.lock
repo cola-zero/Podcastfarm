@@ -154,7 +154,11 @@ GEM
       i18n (>= 0.4.0)
       mime-types (~> 1.16)
       treetop (~> 1.4.8)
+    metaclass (0.0.1)
     mime-types (1.17.2)
+    minitest (2.11.1)
+    mocha (0.10.3)
+      metaclass (~> 0.0.1)
     multi_json (1.0.4)
     nokogiri (1.5.0)
     oauth (0.4.5)
@@ -266,6 +270,8 @@ DEPENDENCIES
   haml-rails
   jquery-rails
   launchy
+  minitest (~> 2.11)
+  mocha
   omniauth (~> 1.0.0)!
   omniauth-contrib!
   omniauth-twitter
