@@ -5,6 +5,9 @@ require 'rails/test_help'
 require 'minitest/autorun'
 require 'capybara/rails'
 require 'mocha'
+require 'database_cleaner'
+
+DatabaseCleaner.strategy = :truncation
 
 class MiniTest::Spec
   include ActiveSupport::Testing::SetupAndTeardown
@@ -37,8 +40,65 @@ end
 # Functional tests = describe ***Controller
 # MiniTest::Spec.register_spec_type( /Controller$/, ControllerSpec )
 MiniTest::Spec.register_spec_type(ControllerSpec) do |desc|
+  return false unless desc.respond_to?(:superclass)
   desc.superclass == ApplicationController
 end
+
+class HelperSpec < MiniTest::Spec
+  include ActionView::TestCase::Behavior
+
+  class DummyClass < ActionView::Base
+    include ApplicationHelper
+  end
+
+  def helper
+    @helper ||= DummyClass.new
+  end
+
+  before(:each) do
+    helper.assign_controller(@controller)
+  end
+end
+
+MiniTest::Spec.register_spec_type( /Helpers$/, HelperSpec)
+
+# Functional tests = describe ***Controller
+MiniTest::Spec.register_spec_type( /Controller$/, ControllerSpec )
+
+
+class AcceptanceSpec < MiniTest::Spec
+  include Rails.application.routes.url_helpers
+  include Capybara::DSL
+
+  self.use_transactional_fixtures = false
+
+  before do
+    @routes = Rails.application.routes
+  end
+
+  after do
+    DatabaseCleaner.clean       # Truncate the database
+    Capybara.reset_sessions!    # Forget the (simulated) browser state
+    Capybara.use_default_driver # Revert Capybara.current_driver to Capybara.default_driver
+  end
+end
+
+# Integration/Acceptance tests = describe '*** Integration'
+MiniTest::Spec.register_spec_type( /Integration$/, AcceptanceSpec )
+
+# Capybara.app_host = 'http://localhost:3000'
+Capybara.default_driver = :webkit
+Capybara.default_selector = :css
+# Capybara.javascript_driver = :webkit
+
+def handle_js_confirm(accept=true)
+  page.evaluate_script "window.original_confirm_function = window.confirm"
+  page.evaluate_script "window.confirm = function(msg) { return #{!!accept}; }"
+  yield
+ensure
+  page.evaluate_script "window.confirm = window.original_confirm_function"
+end
+
 
 class ActiveSupport::TestCase
   # Setup all fixtures in test/fixtures/*.(yml|csv) for all tests in alphabetical order.

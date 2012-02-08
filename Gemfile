@@ -25,6 +25,8 @@ group :development, :test do
   gem 'minitest', '~> 2.11'
   gem 'rspec-rails', '~> 2.8.0'
   gem 'capybara-webkit'
+  gem "capybara_minitest_spec"
+  gem 'database_cleaner'
   gem 'mocha', :require => false
   gem 'launchy'
   gem 'guard-bundler'

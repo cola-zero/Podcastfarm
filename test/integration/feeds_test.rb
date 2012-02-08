@@ -1,7 +1,8 @@
-# -*- coding: utf-8 -*-
-require 'spec_helper'
+require 'test_helper'
 
-describe "Feeds" do
+describe "Feeds Integration" do
+  # include TransactionalTests
+
   def valid_url
     "file://#{URI.escape(File.join(File.dirname(File.expand_path(__FILE__, Dir.getwd)), "..", "fixtures", "feed.rss"))}"
   end
@@ -17,17 +18,16 @@ describe "Feeds" do
   describe "GET /feeds" do
     it "should success" do
       visit feeds_path
-      page.should have_selector "h1"
-      page.should have_content "Podcastfarm"
+      page.must_have_selector "h1"
+      page.must_have_content "Podcastfarm"
     end
 
     it "should show feeds" do
       sign_in
-      feed = Factory(:feed)
+      feed = Factory.create(:feed)
       feed.register_user(User.find_by_nickname("cola_zero"))
       visit feeds_path
-      save_and_open_page
-      page.should have_content feed.title
+      page.must_have_content feed.title
     end
 
     it "should show second feeds" do
@@ -38,8 +38,8 @@ describe "Feeds" do
       feed1.register_user(user)
       feed2.register_user(user)
       visit feeds_path
-      page.should have_content feed1.title
-      page.should have_content feed2.title
+      page.must_have_content feed1.title
+      page.must_have_content feed2.title
     end
 
     it "should not show different users feeds" do
@@ -51,8 +51,8 @@ describe "Feeds" do
       feed1.register_user(user)
       feed2.register_user(different_user)
       visit feeds_path
-      page.should_not have_content feed2.title
-      page.should_not have_content feed2.url
+      page.wont_have_content feed2.title
+      page.wont_have_content feed2.url
     end
   end
 
@@ -63,8 +63,8 @@ describe "Feeds" do
 
     it "should success" do
       visit new_feed_path
-      page.should have_selector "h1"
-      page.should have_content "Podcastfarm"
+      page.must_have_selector "h1"
+      page.must_have_content "Podcastfarm"
     end
 
     context "when valid url is given" do
@@ -72,7 +72,7 @@ describe "Feeds" do
         visit new_feed_path
         page.fill_in "feed_url", :with => valid_url
         page.click_button "Save"
-        page.should have_content "Feed was successfully created."
+        page.must_have_content "Feed was successfully created."
       end
 
       it "should show users feed list" do
@@ -80,7 +80,7 @@ describe "Feeds" do
         page.fill_in "feed_url", :with => valid_url
         page.click_button "Save"
         visit feeds_path
-        page.should have_content "Example Feed"
+        page.must_have_content "Example Feed"
       end
     end
 
@@ -89,7 +89,7 @@ describe "Feeds" do
         visit new_feed_path
         page.fill_in "feed_url", :with => "asdfg"
         page.click_button "Save"
-        page.should have_content "Url given url is invalid"
+        page.must_have_content "Url given url is invalid"
       end
     end
   end
@@ -106,7 +106,7 @@ describe "Feeds" do
     it "should delete feed" do
       handle_js_confirm (true)do
         page.click_link "Destroy"
-        page.should_not have_content "Example Feed"
+        page.wont_have_content "Example Feed"
       end
     end
   end
@@ -119,8 +119,8 @@ describe "Feeds" do
       page.click_button "Save"
       visit feeds_path
       page.click_link "Show"
-      page.should have_content "Example Feed"
-      page.should have_content Feed.find_by_title("Example Feed").url
+      page.must_have_content "Example Feed"
+      page.must_have_content Feed.find_by_title("Example Feed").url
     end
   end
 end
