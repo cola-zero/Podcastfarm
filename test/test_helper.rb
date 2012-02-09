@@ -78,7 +78,7 @@ class AcceptanceSpec < MiniTest::Spec
   include Rails.application.routes.url_helpers
   include Capybara::DSL
 
-  self.use_transactional_fixtures = false
+  self.use_transactional_fixtures = true
 
   before do
     @routes = Rails.application.routes
@@ -140,3 +140,16 @@ def set_omniauth_mock( options = nil)
     OmniAuth.config.mock_auth[:twitter] = :invalid_credentials
   end
 end
+
+class ActiveRecord::Base
+  mattr_accessor :shared_connection
+  @@shared_connection = nil
+
+  def self.connection
+    @@shared_connection || retrieve_connection
+  end
+end
+
+# Forces all threads to share the same connection. This works on
+# Capybara because it starts the web server in a thread.
+ActiveRecord::Base.shared_connection = ActiveRecord::Base.connection
