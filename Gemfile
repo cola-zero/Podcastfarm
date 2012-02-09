@@ -23,19 +23,18 @@ gem 'feedzirra', '~> 0.1.1', :git => 'git://github.com/pauldix/feedzirra.git'
 
 group :development, :test do
   gem 'minitest', '~> 2.11'
-  gem 'rspec-rails', '~> 2.8.0'
   gem 'capybara-webkit'
   gem "capybara_minitest_spec"
   gem 'database_cleaner'
   gem 'mocha', :require => false
   gem 'launchy'
+  gem 'guard', '~> 1.0.0'
   gem 'guard-bundler'
-  gem 'guard-rspec'
+  # gem 'guard-minitest', '~> 0.4.0', :git => 'https://github.com/guard/guard-minitest.git'
+  gem 'guard-minitest', '~> 0.4.0', :git => 'https://github.com/zimbatm/guard-minitest.git'
   gem 'guard-rails'
   gem 'spin'
-  gem 'guard-spork'
   gem 'rb-fsevent'
-  gem 'spork-rails'
   gem 'growl'
   gem 'annotate', :git => 'git://github.com/ctran/annotate_models.git'
   gem 'simplecov', :require => false
