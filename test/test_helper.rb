@@ -5,9 +5,6 @@ require 'rails/test_help'
 require 'minitest/autorun'
 require 'capybara/rails'
 require 'mocha'
-require 'database_cleaner'
-
-DatabaseCleaner.strategy = :truncation
 
 class MiniTest::Spec
   include ActiveSupport::Testing::SetupAndTeardown
@@ -17,14 +14,6 @@ class MiniTest::Spec
 
   class << self
     alias :context :describe
-  end
-
-  before(:each) do
-    DatabaseCleaner.start
-  end
-
-  after(:each) do
-    DatabaseCleaner.clean       # Truncate the database
   end
 end
 
