@@ -18,6 +18,14 @@ class MiniTest::Spec
   class << self
     alias :context :describe
   end
+
+  before(:each) do
+    DatabaseCleaner.start
+  end
+
+  after(:each) do
+    DatabaseCleaner.clean       # Truncate the database
+  end
 end
 
 class ControllerSpec < MiniTest::Spec
@@ -77,7 +85,6 @@ class AcceptanceSpec < MiniTest::Spec
   end
 
   after do
-    DatabaseCleaner.clean       # Truncate the database
     Capybara.reset_sessions!    # Forget the (simulated) browser state
     Capybara.use_default_driver # Revert Capybara.current_driver to Capybara.default_driver
   end
