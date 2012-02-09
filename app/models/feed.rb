@@ -4,10 +4,10 @@
 #
 #  id          :integer         not null, primary key
 #  title       :string(255)
-#  url         :string(255)     not null
+#  url         :string(255)
 #  description :string(255)
-#  created_at  :datetime
-#  updated_at  :datetime
+#  created_at  :datetime        not null
+#  updated_at  :datetime        not null
 #
 
 class Feed < ActiveRecord::Base
