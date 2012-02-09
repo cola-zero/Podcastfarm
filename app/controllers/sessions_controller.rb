@@ -1,8 +1,10 @@
+require 'user_manager'
+
 class SessionsController < ApplicationController
   include ApplicationHelper
   def create
     auth = request.env['omniauth.auth']
-    sign_in User.find_or_create_from_hash(auth)
+    sign_in Podcastfarm::UserManager.find_or_create_from_hash(auth)
     if signed_in?
       flash[:notice] = "Sign in."
     else

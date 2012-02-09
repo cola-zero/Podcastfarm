@@ -12,8 +12,6 @@
 
 class Authorization < ActiveRecord::Base
 
-  attr_accessible :provider, :uid, :user, :user_id
-
   validates :provider, :presence => true
   validates :uid,      :presence => true
   validates :user_id,  :presence => true
@@ -25,11 +23,14 @@ class Authorization < ActiveRecord::Base
     Authorization.find_by_provider_and_uid(auth['provider'], auth['uid'])
   end
 
-  def self.create_from_hash(auth, user = :user_not_logged_in)
-    user = User.create_from_hash(auth) if user == :user_not_logged_in || user == nil
+  def self.create_from_hash(auth_hash, user = :user_not_logged_in)
+    user = User.create_from_hash(auth_hash) if user == :user_not_logged_in || user == nil
     return false if user == false
-    attr = { :provider => auth['provider'], :uid => auth['uid'], :user => user }
-    auth = Authorization.create(attr)
+    auth = Authorization.new
+    auth.provider= auth_hash['provider']
+    auth.uid= auth_hash['uid']
+    auth.user= user
+    auth.save
     (auth.new_record?)? false : auth
   end
 end

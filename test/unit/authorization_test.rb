@@ -21,10 +21,10 @@ describe Authorization do
         :uid => 'asdfg',
         :user_id => 42
       }}
-    let(:authorization) { Authorization.new(attr) }
+    let(:authorization) { Authorization.new }
 
-    it "should be valid" do
-      authorization.must_be :valid?
+    it "should not be valid" do
+      authorization.wont_be :valid?
     end
 
     context "provider is empty" do
@@ -101,6 +101,11 @@ describe Authorization do
 
     context "with User instance" do
       let(:user) { Factory(:user) }
+
+      it "should return authorized user" do
+        Authorization.create_from_hash(auth, user).must_be_kind_of Authorization
+      end
+
       it 'should create authorization row in db' do
         before = Authorization.count
         Authorization.create_from_hash(auth, user)

@@ -6,7 +6,8 @@ describe SessionsController do
 
   describe "Get 'create'" do
     it 'should be success' do
-      # pending 'create User.find_or_create_from_hash method.'
+      set_omniauth_mock
+      request.env["omniauth.auth"] = OmniAuth.config.mock_auth[:twitter]
       get 'create'
       assert_redirected_to '/'
     end
