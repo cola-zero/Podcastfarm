@@ -86,7 +86,7 @@ describe User do
 
     describe "return value" do
       it "should return user instance" do
-        User.find_or_create_from_hash(auth).must_equal User.find_by_nickname(auth['info']['nickname'])
+        User.find_or_create_from_hash(auth).must_be_kind_of(User)
       end
 
       it "should return user which name is 'こーら'" do
