@@ -16,14 +16,14 @@ describe FeedsController do
 
     describe "GET index" do
       it "assigns all feeds as @feeds" do
-        feed = Feed.create! valid_attributes
+        feed = Factory(:feed)
         feed.register_user(@user)
         get :index
         assigns(:feeds).must_equal([feed])
       end
 
       it "should not assign another user's feed in @feeds" do
-        feed = Feed.create! valid_attributes
+        feed = Factory(:feed)
         different_user = Factory(:user)
         feed.register_user(different_user)
         get :index
@@ -33,7 +33,7 @@ describe FeedsController do
 
         describe "GET show" do
       it "assigns the requested feed as @feed" do
-        feed = Feed.create! valid_attributes
+        feed = Factory(:feed)
         get :show, :id => feed.id
         assigns(:feed).must_equal(feed)
       end
@@ -137,14 +137,14 @@ describe FeedsController do
 
     describe "DELETE destroy" do
       it "destroys the requested feed" do
-        feed = Feed.create! valid_attributes
+        feed = Factory(:feed)
         before = Feed.count
         delete :destroy, :id => feed.id
         (Feed.count - before).must_equal -1
       end
 
       it "should remove user's feeds" do
-        feed = Feed.create! valid_attributes
+        feed = Factory(:feed)
         feed.register_user(@controller.current_user)
         @controller.current_user.feeds.must_equal [feed]
         delete :destroy, :id => feed.id
@@ -154,7 +154,7 @@ describe FeedsController do
       context "when another user subscribing the requested feed" do
         it "should not destroys the requested feed" do
           @different_user = Factory(:user)
-          feed = Feed.create! valid_attributes
+          feed = Factory(:feed)
           feed.register_user(@different_user)
           feed.register_user(@user)
           before = Feed.count
@@ -164,7 +164,7 @@ describe FeedsController do
       end
 
       it "redirects to the feeds list" do
-        feed = Feed.create! valid_attributes
+        feed = Factory(:feed)
         delete :destroy, :id => feed.id
         assert_redirected_to(feeds_url)
       end
@@ -182,7 +182,7 @@ describe FeedsController do
     describe "GET show" do
       it "should redirect to signin path" do
         @controller.sign_out
-        feed = Feed.create! valid_attributes
+        feed = Factory(:feed)
         get :show, :id => feed.id
         assert_redirected_to "/auth/twitter"
       end

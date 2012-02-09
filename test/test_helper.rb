@@ -37,8 +37,9 @@ end
 # Functional tests = describe ***Controller
 # MiniTest::Spec.register_spec_type( /Controller$/, ControllerSpec )
 MiniTest::Spec.register_spec_type(ControllerSpec) do |desc|
-  return false unless desc.respond_to?(:superclass)
-  desc.superclass == ApplicationController
+  if desc.respond_to?(:superclass)
+    desc.superclass == ApplicationController
+  end
 end
 
 class HelperSpec < MiniTest::Spec

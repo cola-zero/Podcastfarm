@@ -160,6 +160,9 @@ GEM
       treetop (~> 1.4.8)
     metaclass (0.0.1)
     mime-types (1.17.2)
+    mini_backtrace (0.1.3)
+      minitest (> 1.2.0)
+      rails (>= 2.3.3)
     minitest (2.11.1)
     mocha (0.10.3)
       metaclass (~> 0.0.1)
@@ -258,6 +261,7 @@ DEPENDENCIES
   haml-rails
   jquery-rails
   launchy
+  mini_backtrace
   minitest (~> 2.11)
   mocha
   omniauth (~> 1.0.0)!

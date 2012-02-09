@@ -169,10 +169,9 @@ describe User do
 
     let(:url)  { "file://#{URI.escape(File.join(File.dirname(File.expand_path(__FILE__, Dir.getwd)), "..", "fixtures", "feed.rss"))}" }
     let(:user) { User.create_from_hash(auth)}
-    let(:feed) { Feed.create( :url => url )}
+    let(:feed) { Factory(:feed) }
     it "can access to feed" do
       feed.register_user(user)
-      feed = Feed.find_by_url(url)
       user.feeds.must_equal([feed])
     end
 
