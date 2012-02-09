@@ -20,4 +20,5 @@ guard 'minitest' do
   # Rails
   watch(%r|^app/controllers/(.*)\.rb|) { |m| "test/functional/#{m[1]}_test.rb" }
   watch(%r|^app/models/(.*)\.rb|)      { |m| "test/unit/#{m[1]}_test.rb" }
+  watch(%r|^lib/podcastfarm/(.*)\.rb|) { |m| "test/unit/#{m[1]}_test.rb" }
 end
