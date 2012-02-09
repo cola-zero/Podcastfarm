@@ -14,10 +14,14 @@ require 'test_helper'
 
 describe Feed do
 
-  let(:feed) { Feed.new(attr) }
+  let(:feed) { Feed.new() }
   let(:attr) { { :url => url } }
   let(:url)  { "file://#{URI.escape(File.join(File.dirname(File.expand_path(__FILE__, Dir.getwd)), "..", "fixtures", "feed.rss"))}" }
   let(:not_found_url) { "file://#{URI.escape(File.join(File.dirname(File.expand_path(__FILE__, Dir.getwd)), "..", "fixtures", "not_found.rss"))}" }
+
+  before do
+    feed.url = url
+  end
 
   it 'can be created' do
     feed.wont_equal nil
@@ -39,7 +43,9 @@ describe Feed do
       it "should not save to db" do
         feed.save
         before = Feed.count
-        Feed.create(attr)
+        second_feed = Feed.new
+        second_feed.url = url
+        second_feed.save
         Feed.count.must_equal(before)
       end
     end
@@ -117,14 +123,14 @@ describe Feed do
   end
 
   describe ".register_user method" do
-    subject { Feed.create( :url => url ) }
+    subject { feed }
+
     it "must_respond_to(:register_user)" do
       subject.must_respond_to(:register_user)
     end
 
     describe "assign users" do
       let(:user) { Factory(:user) }
-      let(:feed) { Feed.create( :url => url )}
 
       before (:each) do
         feed.register_user(user)
@@ -174,16 +180,17 @@ describe Feed do
   end
 
   describe ".unregister_user method" do
-    subject { Feed.create( :url => url ) }
-    it { subject.must_respond_to(:unregister_user) }
-
-    let(:feed) { Feed.create( :url => url) }
+    subject { feed }
     let(:user) { Factory(:user)}
+
     before (:each) do
       feed.register_user user
     end
 
+    it { subject.must_respond_to(:unregister_user) }
+
     it "should remove user from feed.users" do
+      skip 'implement FeedManager. this method should handle by manager.'
       feed.users.must_equal [user]
       user.feeds.must_equal [feed]
       feed.unregister_user(user)
