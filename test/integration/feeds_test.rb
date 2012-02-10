@@ -11,6 +11,9 @@ describe "Feeds Integration" do
     visit "/auth/twitter"
   end
 
+  def manager
+    Podcastfarm::FeedManager
+  end
   before(:each)do
     set_omniauth_mock
   end
@@ -25,7 +28,7 @@ describe "Feeds Integration" do
     it "should show feeds" do
       sign_in
       feed = Factory.create(:feed)
-      feed.register_user(User.find_by_nickname("cola_zero"))
+      manager.register_user(feed, User.find_by_nickname("cola_zero"))
       visit feeds_path
       page.must_have_content feed.title
     end
@@ -35,8 +38,8 @@ describe "Feeds Integration" do
       user = User.find_by_nickname("cola_zero")
       feed1 = Factory(:feed)
       feed2 = Factory(:feed)
-      feed1.register_user(user)
-      feed2.register_user(user)
+      manager.register_user(feed1, user)
+      manager.register_user(feed2, user)
       visit feeds_path
       page.must_have_content feed1.title
       page.must_have_content feed2.title
@@ -48,8 +51,8 @@ describe "Feeds Integration" do
       different_user = Factory(:user)
       feed1 = Factory(:feed)
       feed2 = Factory(:feed)
-      feed1.register_user(user)
-      feed2.register_user(different_user)
+      manager.register_user(feed1, user)
+      manager.register_user(feed2, different_user)
       visit feeds_path
       page.wont_have_content feed2.title
       page.wont_have_content feed2.url

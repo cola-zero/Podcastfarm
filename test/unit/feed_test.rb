@@ -55,7 +55,7 @@ describe Feed do
     context "url is valid" do
       let(:url) { "http://example.com/" }
       it "should be valid" do
-        feed.send(:url_is_valid).must_equal true
+        feed.must_be :valid?
       end
     end
     context "url is not valid" do
@@ -72,131 +72,10 @@ describe Feed do
     end
   end
 
-  describe "get_feed_infomation" do
-    before(:each) do
-      feed.send(:get_feed_infomation)
-    end
-
-    it "should set initial attributes" do
-      feed.title.must_equal "Example Feed"
-      feed.description.must_equal "This is test feed."
-    end
-    context "404 feed" do
-      let(:url) { not_found_url }
-      describe "title" do
-        it "should be empty" do
-          feed.title.must_be :empty?
-        end
-      end
-      describe "description" do
-        it "should be empty" do
-          feed.description.must_be :empty?
-        end
-      end
-    end
-  end
-
-  describe "find_or_create method" do
-    context "when new url" do
-      it "should create new feed"do
-        before = Feed.count
-        Feed.find_or_create_by_url(url)
-        Feed.count.must_be_close_to(before, 1)
-      end
-    end
-
-    context "when url is exist" do
-      before (:each) do
-        feed.save
-      end
-      it "should return exist feed" do
-        Feed.find_or_create_by_url(url).must_equal feed
-      end
-    end
-  end
-
   describe "user association" do
     subject { feed }
     it "must_respond_to(:users)" do
       subject.must_respond_to(:users)
     end
-  end
-
-  describe ".register_user method" do
-    subject { feed }
-
-    it "must_respond_to(:register_user)" do
-      subject.must_respond_to(:register_user)
-    end
-
-    describe "assign users" do
-      let(:user) { Factory(:user) }
-
-      before (:each) do
-        feed.register_user(user)
-      end
-
-      it "should add user" do
-        feed = Feed.find_by_url(url)
-        feed.users.must_equal([user])
-      end
-
-      let(:second_user) { Factory(:user) }
-      it "should add another user" do
-        feed.register_user(second_user)
-        feed = Feed.find_by_url(url)
-        feed.users.must_equal([user, second_user])
-      end
-
-      it "should not add same user" do
-        feed.register_user(user)
-        feed.register_user(user)
-        feed = Feed.find_by_url(url)
-        feed.users.must_equal([user])
-      end
-
-    end
-
-    describe "invalid arguments" do
-      context "user is nil" do
-        it "should return false" do
-          feed.register_user(nil).must_equal false
-        end
-
-        it "should not add feed" do
-          before = Feed.count
-          feed.register_user(nil)
-          Feed.count.must_be_close_to(before, 0)
-        end
-
-        it "should not add users" do
-          feed = Feed.find_or_create_by_url(url)
-          before = Feed.count
-          feed.register_user(nil)
-          Feed.count.must_be_close_to(before, 0)
-        end
-      end
-    end
-  end
-
-  describe ".unregister_user method" do
-    subject { feed }
-    let(:user) { Factory(:user)}
-
-    before (:each) do
-      feed.register_user user
-    end
-
-    it { subject.must_respond_to(:unregister_user) }
-
-    it "should remove user from feed.users" do
-      skip 'implement FeedManager. this method should handle by manager.'
-      feed.users.must_equal [user]
-      user.feeds.must_equal [feed]
-      feed.unregister_user(user)
-      feed.users.must_equal []
-      user.feeds.must_equal []
-    end
-
   end
 end

@@ -8,6 +8,10 @@ describe FeedsController do
     { :url => "file://#{URI.escape(File.join(File.dirname(File.expand_path(__FILE__, Dir.getwd)), "..", "fixtures", "feed.rss"))}" }
   end
 
+  def manager
+    Podcastfarm::FeedManager
+  end
+
   context "when user signed in" do
     before (:each) do
       @user = Factory(:user)
@@ -17,7 +21,7 @@ describe FeedsController do
     describe "GET index" do
       it "assigns all feeds as @feeds" do
         feed = Factory(:feed)
-        feed.register_user(@user)
+        manager.register_user(feed, @user)
         get :index
         assigns(:feeds).must_equal([feed])
       end
@@ -25,7 +29,7 @@ describe FeedsController do
       it "should not assign another user's feed in @feeds" do
         feed = Factory(:feed)
         different_user = Factory(:user)
-        feed.register_user(different_user)
+        manager.register_user(feed, different_user)
         get :index
         assigns(:feeds).must_equal([])
       end
@@ -71,25 +75,27 @@ describe FeedsController do
           end
 
           context "when other user's feeds are exist" do
-            before (:each) do
-              different_user = Factory(:user)
-              @controller.sign_in(different_user)
+            before do
+              @different_user = Factory(:user)
+              @controller.sign_in(@different_user)
               post :create, :feed => valid_attributes
             end
 
             it "should not create new feed" do
-              @controller.sign_in(User.first)
+              @controller.sign_in(@user)
               before = Feed.count
               post :create, :feed => valid_attributes
               Feed.count.must_equal before
             end
 
             it "should register to current_user" do
-              @controller.sign_in(User.first)
+              @controller.sign_in(@user)
               post :create, :feed => valid_attributes
               feed = Feed.find_by_url(valid_attributes[:url])
-              feed.users.must_equal User.all.reverse
-              @controller.current_user.feeds.must_equal [feed]
+              feed.users.include?(@different_user).must_equal true
+              feed.users.include?(@user).must_equal true
+              @different_user.feeds.include?(feed).must_equal true
+              @user.feeds.include?(feed).must_equal true
             end
           end
         end
@@ -145,7 +151,7 @@ describe FeedsController do
 
       it "should remove user's feeds" do
         feed = Factory(:feed)
-        feed.register_user(@controller.current_user)
+        manager.register_user(feed, @controller.current_user)
         @controller.current_user.feeds.must_equal [feed]
         delete :destroy, :id => feed.id
         @controller.current_user.feeds.must_be :empty?
@@ -155,8 +161,8 @@ describe FeedsController do
         it "should not destroys the requested feed" do
           @different_user = Factory(:user)
           feed = Factory(:feed)
-          feed.register_user(@different_user)
-          feed.register_user(@user)
+          manager.register_user(feed, @different_user)
+          manager.register_user(feed, @user)
           before = Feed.count
           delete :destroy, :id => feed.id
           Feed.count.must_equal before

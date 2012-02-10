@@ -1,3 +1,5 @@
+require 'feed_manager'
+
 class FeedsController < ApplicationController
   before_filter :authenticate
 
@@ -42,13 +44,11 @@ class FeedsController < ApplicationController
   # POST /feeds
   # POST /feeds.json
   def create
-    @feed = Feed.new
-    @feed.url = params[:feed][:url]
-    @feed.get_feed_infomation
+    @feed = manager.find_or_create_feed(params[:feed][:url])
 
     respond_to do |format|
       if @feed.save || !(Feed.find_by_url(params[:feed][:url]).nil?)
-        @feed.register_user(current_user)
+        manager.register_user(@feed, current_user)
         format.html { redirect_to @feed, notice: 'Feed was successfully created.' }
         format.json { render json: @feed, status: :created, location: @feed }
       else
@@ -78,7 +78,7 @@ class FeedsController < ApplicationController
   # DELETE /feeds/1.json
   def destroy
     @feed = Feed.find(params[:id])
-    @feed.unregister_user(current_user)
+    manager.unregister_user(@feed, current_user)
     if @feed.users.empty?
       @feed.destroy
     end
@@ -87,5 +87,11 @@ class FeedsController < ApplicationController
       format.html { redirect_to feeds_url }
       format.json { head :ok }
     end
+  end
+
+  private
+
+  def manager
+    Podcastfarm::FeedManager
   end
 end

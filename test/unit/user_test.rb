@@ -171,16 +171,16 @@ describe User do
     let(:user) { User.create_from_hash(auth)}
     let(:feed) { Factory(:feed) }
     it "can access to feed" do
-      feed.register_user(user)
+      Podcastfarm::FeedManager.register_user(feed, user)
       user.feeds.must_equal([feed])
     end
 
     it "should add another feed" do
       feed1 = Feed.find_or_create_by_url(url)
-      feed1.register_user(user)
+      Podcastfarm::FeedManager.register_user(feed1, user)
       url = "file://#{URI.escape(File.join(File.dirname(File.expand_path(__FILE__, Dir.getwd)), "..", "fixtures", "first_feed.rss"))}"
       feed2 = Feed.find_or_create_by_url(url)
-      feed2.register_user(user)
+      Podcastfarm::FeedManager.register_user(feed2, user)
       user.feeds.must_equal([feed1, feed2])
     end
   end
