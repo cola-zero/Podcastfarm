@@ -14,6 +14,8 @@ class Subscription < ActiveRecord::Base
   attr_accessible :user_id
   attr_accessible :feed_id
 
+  validates_uniqueness_of :feed_id, :scope => [:user_id]
+
   belongs_to :user
   belongs_to :feed
 end
