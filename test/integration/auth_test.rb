@@ -1,4 +1,5 @@
 require 'test_helper'
+SimpleCov.command_name 'test:inegration' if ENV["COVERAGE"]
 
 describe "Authenticate Integration" do
   describe "sign in" do

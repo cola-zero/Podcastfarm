@@ -1,4 +1,5 @@
 require 'test_helper'
+SimpleCov.command_name 'test:inegration' if ENV["COVERAGE"]
 
 describe "Feeds Integration" do
   # include TransactionalTests

@@ -1,4 +1,5 @@
 require 'test_no_rails_helper'
+SimpleCov.command_name 'test:units' if ENV["COVERAGE"]
 require 'entry_methods'
 
 class DummyEntryClass

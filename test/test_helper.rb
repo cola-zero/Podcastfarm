@@ -1,4 +1,11 @@
 # -*- coding: utf-8 -*-
+if ENV["COVERAGE"]
+  require 'simplecov'
+  SimpleCov.start 'rails' do
+    use_merging(['test:units', 'test:functionals', 'test:integration'])
+  end
+end
+
 ENV["RAILS_ENV"] = "test"
 require File.expand_path('../../config/environment', __FILE__)
 require 'rails/test_help'
