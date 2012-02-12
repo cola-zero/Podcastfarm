@@ -17,6 +17,7 @@ module Podcastfarm
         item = Item.new
         item.title = item_parser.title
         item.description = item_parser.description
+        item.guid = item_parser.guid
         return item.save
       else
         return false

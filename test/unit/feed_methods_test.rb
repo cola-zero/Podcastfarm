@@ -80,10 +80,12 @@ describe "Podcastfarm::FeedMethods" do
       item_parser.expects(:respond_to?).with(:description).returns(true)
       item_parser.expects(:title).returns("Ep. #1")
       item_parser.expects(:description).returns("This is episode 1.")
+      item_parser.expects(:guid).returns("asdfg")
       item = mock
       Item.expects(:new).returns(item)
       item.expects(:title=).with("Ep. #1")
       item.expects(:description=).with("This is episode 1.")
+      item.expects(:guid=).with("asdfg")
       item.expects(:save).returns true
       feed.make_item(item_parser)
     end
