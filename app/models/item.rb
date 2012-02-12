@@ -9,8 +9,10 @@
 #  created_at  :datetime        not null
 #  updated_at  :datetime        not null
 #
+require 'item_methods'
 
 class Item < ActiveRecord::Base
+  include Podcastfarm::ItemMethods
 
   belongs_to :feed
 
