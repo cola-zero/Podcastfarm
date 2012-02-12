@@ -1,6 +1,6 @@
 # == Schema Information
 #
-# Table name: items
+# Table name: entry
 #
 #  id          :integer         not null, primary key
 #  title       :string(255)
@@ -13,8 +13,8 @@
 
 require 'test_helper'
 
-describe Item do
-  subject { Item.new }
+describe Entry do
+  subject { Entry.new }
 
   describe "attributes" do
     let (:attr) { {
@@ -40,7 +40,7 @@ describe Item do
 
   describe "in_this_feed scope" do
     it "must respond to in_this_feed method" do
-      Item.must_respond_to(:in_this_feed)
+      Entry.must_respond_to(:in_this_feed)
     end
   end
 end

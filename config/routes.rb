@@ -7,7 +7,7 @@ Podcastfarm::Application.routes.draw do
   match 'auth/failure' => "sessions#failure"
   resource 'sessions', :only => [:create, :destroy, :failure]
   resources "feeds", :only => [:show, :new, :create, :index, :destroy] do
-    resources "items", :only => [:show, :index]
+    resources "entries", :only => [:show, :index]
   end
 
   root :to => "pages#home"

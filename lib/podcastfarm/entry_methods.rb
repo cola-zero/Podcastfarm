@@ -1,7 +1,7 @@
 module Podcastfarm
-  module ItemMethods
+  module EntryMethods
 
-    def get_item_information( parser )
+    def get_entry_information( parser )
       return if parser == nil
       self.title = parser.title
       self.description = parser.description

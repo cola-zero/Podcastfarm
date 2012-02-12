@@ -1,6 +1,6 @@
 # == Schema Information
 #
-# Table name: items
+# Table name: entries
 #
 #  id          :integer         not null, primary key
 #  title       :string(255)
@@ -14,9 +14,10 @@
 # Read about factories at http://github.com/thoughtbot/factory_girl
 
 FactoryGirl.define do
-  factory :item do
+  factory :entry do
     title "MyString"
     description "MyString"
+    guid "asdfg"
     feed_id 1
   end
 end

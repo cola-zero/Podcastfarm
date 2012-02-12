@@ -1,6 +1,6 @@
 # == Schema Information
 #
-# Table name: items
+# Table name: entry
 #
 #  id          :integer         not null, primary key
 #  title       :string(255)
@@ -11,10 +11,10 @@
 #  guid        :string(255)
 #
 
-require 'item_methods'
+require 'entry_methods'
 
-class Item < ActiveRecord::Base
-  include Podcastfarm::ItemMethods
+class Entry < ActiveRecord::Base
+  include Podcastfarm::EntryMethods
 
   belongs_to :feed
 
