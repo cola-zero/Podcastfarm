@@ -2,24 +2,38 @@ module Podcastfarm
   module FeedMethods
     def get_feed_infomation( url = nil )
       self.url ||= url
-      feed_parser ||= make_parser
-      if feed_parser.respond_to?(:title) && feed_parser.respond_to?(:description)
-        self.title = feed_parser.title || ""
-        self.description = feed_parser.description || ""
+      make_parser
+      if @parser.respond_to?(:title) && @parser.respond_to?(:description)
+        self.title = @parser.title || ""
+        self.description = @parser.description || ""
       else
         self.title ||= ""
         self.description ||= ""
       end
     end
 
+    def make_item(item_parser)
+      if item_parser.respond_to?(:title) && item_parser.respond_to?(:description)
+        item = Item.new
+        item.title = item_parser.title
+        item.description = item_parser.description
+        return item.save
+      else
+        return false
+      end
+    end
+
+    def update_feed
+      @parser.entries.each do |item_parser|
+        make_item(item_parser)
+      end
+    end
 
     private
 
     def make_parser
-      Feedzirra::Feed.fetch_and_parse(self.url)
+      @parser ||= Feedzirra::Feed.fetch_and_parse(self.url)
     end
-
-    private
 
     def url_is_valid
       valid_url? ? true : errors.add(:url, 'given url is invalid')

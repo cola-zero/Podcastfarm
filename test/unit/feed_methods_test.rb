@@ -12,6 +12,8 @@ module Feedzirra
   end
 end
 
+class Item; end
+
 describe "Podcastfarm::FeedMethods" do
 
   let(:feed) { DummyFeedClass.new }
@@ -64,6 +66,55 @@ describe "Podcastfarm::FeedMethods" do
           feed.description.must_equal nil
         end
       end
+    end
+  end
+
+  describe "make_item" do
+    it "must_respond_do :make_item" do
+      feed.must_respond_to(:make_item)
+    end
+
+    it "must create new item" do
+      item_parser = mock
+      item_parser.expects(:respond_to?).with(:title).returns(true)
+      item_parser.expects(:respond_to?).with(:description).returns(true)
+      item_parser.expects(:title).returns("Ep. #1")
+      item_parser.expects(:description).returns("This is episode 1.")
+      item = mock
+      Item.expects(:new).returns(item)
+      item.expects(:title=).with("Ep. #1")
+      item.expects(:description=).with("This is episode 1.")
+      item.expects(:save).returns true
+      feed.make_item(item_parser)
+    end
+
+    context 'when parser is invalid' do
+      it "must return false" do
+        item_parser = mock()
+        item_parser.expects(:respond_to?).with(:title).returns(false)
+        feed.make_item(item_parser).must_equal(false)
+      end
+    end
+  end
+
+  describe "update_feed" do
+    def mock_parser
+      parser = mock()
+      Feedzirra::Feed.expects(:fetch_and_parse).returns(parser)
+      feed.send(:make_parser)
+    end
+
+    it "must respond_to update_feed method" do
+      feed.must_respond_to( :update_feed )
+    end
+
+    it "must create each items" do
+      parser = mock_parser
+      item_p1, item_p2 = mock, mock
+      parser.expects(:entries).returns( [item_p1, item_p2])
+      feed.expects(:make_item).with(item_p1).returns(true)
+      feed.expects(:make_item).with(item_p2).returns(true)
+      feed.update_feed
     end
   end
 
