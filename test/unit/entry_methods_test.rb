@@ -3,7 +3,7 @@ require 'entry_methods'
 
 class DummyEntryClass
   include Podcastfarm::EntryMethods
-  attr_accessor :title, :description
+  attr_accessor :title, :description, :guid
 end
 
 describe "EntryMethods" do
@@ -22,6 +22,13 @@ describe "EntryMethods" do
     def act_as_get_entry_information
       parser.expects(:title).returns("Ep. #1")
       parser.expects(:description).returns("This is #1.")
+      parser.expects(:id).returns("asdfg")
+      entry.expects(:save).returns(true)
+    end
+
+    it "must return true" do
+      act_as_get_entry_information
+      entry.get_entry_information(parser).must_equal true
     end
 
     it "must set title" do
@@ -34,6 +41,12 @@ describe "EntryMethods" do
       act_as_get_entry_information
       entry.get_entry_information(parser)
       entry.description.must_equal "This is #1."
+    end
+
+    it "must set guid" do
+      act_as_get_entry_information
+      entry.get_entry_information(parser)
+      entry.guid.must_equal "asdfg"
     end
   end
 end

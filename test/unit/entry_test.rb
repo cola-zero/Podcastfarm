@@ -43,4 +43,10 @@ describe Entry do
       Entry.must_respond_to(:in_this_feed)
     end
   end
+
+  describe "find_from_parser scope" do
+    it "must respond to find_from_parser method" do
+      Entry.must_respond_to(:find_from_parser)
+    end
+  end
 end

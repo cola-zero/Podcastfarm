@@ -5,6 +5,8 @@ module Podcastfarm
       return if parser == nil
       self.title = parser.title
       self.description = parser.description
+      self.guid = parser.id
+      save
     end
   end
 end

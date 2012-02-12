@@ -12,21 +12,11 @@ module Podcastfarm
       end
     end
 
-    def make_item(item_parser)
-      if item_parser.respond_to?(:title) && item_parser.respond_to?(:description)
-        item = Item.new
-        item.title = item_parser.title
-        item.description = item_parser.description
-        item.guid = item_parser.guid
-        return item.save
-      else
-        return false
-      end
-    end
-
     def update_feed
       @parser.entries.each do |item_parser|
-        make_item(item_parser)
+        entry = Entry.in_this_feed(self.id).find_from_parser(item_parser).first
+        entry = Entry.new if entry == nil
+        entry.get_entry_information(item_parser)
       end
     end
 

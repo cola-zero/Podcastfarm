@@ -19,4 +19,5 @@ class Entry < ActiveRecord::Base
   belongs_to :feed
 
   scope :in_this_feed, lambda { |f| where(:feed_id => f) }
+  scope :find_from_parser, lambda { |p| where(:guid => p.id) }
 end

@@ -3,7 +3,8 @@ require 'feed_methods'
 
 class DummyFeedClass
   include Podcastfarm::FeedMethods
-  attr_accessor :url, :title, :description, :users, :errors
+  attr_accessor :url, :title, :description, :users, :errors, :id
+  @id = 1
   @users = []
 end
 
@@ -12,7 +13,7 @@ module Feedzirra
   end
 end
 
-class Item; end
+class Entry; end
 
 describe "Podcastfarm::FeedMethods" do
 
@@ -24,7 +25,7 @@ describe "Podcastfarm::FeedMethods" do
       :url => "http://example.com/feed.rss"
     }}
 
-  describe "get_feed_infomation method" do
+  describe "get_feed_information method" do
     context('valid feed') do
       before(:each) do
         Feedzirra::Feed.expects(:fetch_and_parse).returns(parser)
@@ -69,39 +70,10 @@ describe "Podcastfarm::FeedMethods" do
     end
   end
 
-  describe "make_item" do
-    it "must_respond_do :make_item" do
-      feed.must_respond_to(:make_item)
-    end
-
-    it "must create new item" do
-      item_parser = mock
-      item_parser.expects(:respond_to?).with(:title).returns(true)
-      item_parser.expects(:respond_to?).with(:description).returns(true)
-      item_parser.expects(:title).returns("Ep. #1")
-      item_parser.expects(:description).returns("This is episode 1.")
-      item_parser.expects(:guid).returns("asdfg")
-      item = mock
-      Item.expects(:new).returns(item)
-      item.expects(:title=).with("Ep. #1")
-      item.expects(:description=).with("This is episode 1.")
-      item.expects(:guid=).with("asdfg")
-      item.expects(:save).returns true
-      feed.make_item(item_parser)
-    end
-
-    context 'when parser is invalid' do
-      it "must return false" do
-        item_parser = mock()
-        item_parser.expects(:respond_to?).with(:title).returns(false)
-        feed.make_item(item_parser).must_equal(false)
-      end
-    end
-  end
-
   describe "update_feed" do
+    let(:parser) { mock }
+
     def mock_parser
-      parser = mock()
       Feedzirra::Feed.expects(:fetch_and_parse).returns(parser)
       feed.send(:make_parser)
     end
@@ -110,13 +82,28 @@ describe "Podcastfarm::FeedMethods" do
       feed.must_respond_to( :update_feed )
     end
 
-    it "must create each items" do
-      parser = mock_parser
-      item_p1, item_p2 = mock, mock
-      parser.expects(:entries).returns( [item_p1, item_p2])
-      feed.expects(:make_item).with(item_p1).returns(true)
-      feed.expects(:make_item).with(item_p2).returns(true)
-      feed.update_feed
+    describe "behavior of this method" do
+      let(:entry_parser) { mock }
+      let(:tmp_relation) { mock }
+      let(:entry) { mock}
+
+      before(:each) do
+        mock_parser
+        parser.expects(:entries).returns( [entry_parser, entry_parser])
+        Entry.expects(:in_this_feed).with(@id).twice.returns(tmp_relation)
+        entry.expects(:get_entry_information).with(entry_parser).twice
+      end
+
+      it "must create each entries" do
+        tmp_relation.expects(:find_from_parser).with(entry_parser).twice.returns( [] )
+        Entry.expects(:new).twice.returns(entry)
+        feed.update_feed
+      end
+
+      it "must update exist entries" do
+        tmp_relation.expects(:find_from_parser).with(entry_parser).twice.returns( [entry] )
+        feed.update_feed
+      end
     end
   end
 
