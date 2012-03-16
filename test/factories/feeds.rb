@@ -26,8 +26,8 @@ FactoryGirl.define do
   end
 
   factory :feed do
-    title { Factory.next(:name) }
-    url   { Factory.next(:url) }
-    description { Factory.next(:nickname) }
+    title
+    url
+    description
   end
 end

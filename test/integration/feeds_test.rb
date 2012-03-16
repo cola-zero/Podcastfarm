@@ -24,7 +24,7 @@ describe "Feeds Integration" do
 
     it "should show feeds" do
       sign_in
-      feed = Factory.create(:feed)
+      feed = FactoryGirl.create(:feed)
       feed.register_user(User.find_by_nickname("cola_zero"))
       visit feeds_path
       page.must_have_content feed.title
