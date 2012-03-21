@@ -22,7 +22,7 @@ FactoryGirl.define do
   end
 
   factory :user do
-    name { Factory.next(:name) }
-    nickname { Factory.next(:nickname) }
+    name
+    nickname
   end
 end

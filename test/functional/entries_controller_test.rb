@@ -4,10 +4,11 @@ SimpleCov.command_name 'test:functionals' if ENV["COVERAGE"]
 class EntriesControllerTest < ActionController::TestCase
   setup do
     @entry = Factory(:entry)
+    @feed = Factory(:feed)
   end
 
   test "should get index" do
-    get :index
+    get :index, feed_id: @feed
     assert_response :success
     assigns(:entries).wont_be_nil
   end

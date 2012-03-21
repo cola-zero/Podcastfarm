@@ -16,8 +16,8 @@ class User < ActiveRecord::Base
   validates :name, :presence => true
   validates :nickname, :presence => true
 
-  has_many :authorization
-  has_many :subscriptions
+  has_many :authorization, :dependent => :destroy
+  has_many :subscriptions, :dependent => :destroy
   has_many :feeds, :through => :subscriptions
 
   def self.find_or_create_from_hash(auth_hash, user = :user_not_presented)

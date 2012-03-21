@@ -90,6 +90,7 @@ describe "Podcastfarm::FeedMethods" do
 
       before(:each) do
         mock_parser
+        parser.expects(:respond_to?).with(:entries).returns true
         parser.expects(:entries).returns( [entry_parser, entry_parser])
         Entry.expects(:in_this_feed).with(@id).twice.returns(tmp_relation)
         entry.expects(:get_entry_information).with(entry_parser).twice

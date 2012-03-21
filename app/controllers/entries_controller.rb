@@ -3,6 +3,7 @@ class EntriesController < ApplicationController
   # GET /entries.json
   def index
     @entries = Entry.all
+    @feed = Feed.find([params[:feed_id]])
 
     respond_to do |format|
       format.html # index.html.erb

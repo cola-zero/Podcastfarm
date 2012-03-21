@@ -28,7 +28,7 @@ describe "Feeds Integration" do
 
     it "should show feeds" do
       sign_in
-      feed = Factory.create(:feed)
+      feed = FactoryGirl.create(:feed)
       manager.register_user(feed, User.find_by_nickname("cola_zero"))
       visit feeds_path
       page.must_have_content feed.title
@@ -116,15 +116,29 @@ describe "Feeds Integration" do
   end
 
   describe "GET /feeds/1" do
-    it "should show title and url" do
+    def sign_in_and_save_feed
       sign_in
       visit new_feed_path
       page.fill_in "feed_url", :with => valid_url
       page.click_button "Save"
+    end
+
+    it "should show title and url" do
+      sign_in_and_save_feed
       visit feeds_path
       page.click_link "Show"
       page.must_have_content "Example Feed"
       page.must_have_content Feed.find_by_title("Example Feed").url
+    end
+
+    describe "GET /feeds/1/entries" do
+      it "should show title of each entries" do
+        sign_in_and_save_feed
+        visit '/feeds/1/entries'
+        (1..9).each do |n|
+          page.must_have_content "Item##{n}"
+        end
+      end
     end
   end
 end

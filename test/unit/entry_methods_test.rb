@@ -22,7 +22,7 @@ describe "EntryMethods" do
 
     def act_as_get_entry_information
       parser.expects(:title).returns("Ep. #1")
-      parser.expects(:description).returns("This is #1.")
+      parser.expects(:summary).returns("This is #1.")
       parser.expects(:id).returns("asdfg")
       entry.expects(:save).returns(true)
     end

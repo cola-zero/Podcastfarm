@@ -11,5 +11,4 @@
   - @entries.each do |entry|
     %tr
       %td= entry.title
-      %td= entry.description
-      %td= link_to feed_entries_path
+      %td= link_to "link", feed_entry_path(@feed, entry)

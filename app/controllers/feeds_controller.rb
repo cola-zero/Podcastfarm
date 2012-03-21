@@ -45,6 +45,7 @@ class FeedsController < ApplicationController
   # POST /feeds.json
   def create
     @feed = manager.find_or_create_feed(params[:feed][:url])
+    @feed.update_feed
 
     respond_to do |format|
       if @feed.save || !(Feed.find_by_url(params[:feed][:url]).nil?)

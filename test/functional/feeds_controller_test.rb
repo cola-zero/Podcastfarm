@@ -116,6 +116,15 @@ describe FeedsController do
           post :create, :feed => valid_attributes
           assert_redirected_to(Feed.last)
         end
+
+        it "should call update_feed method" do
+          feed = Feed.new
+          Podcastfarm::FeedManager.expects(:find_or_create_feed).returns(feed)
+          Podcastfarm::FeedManager.expects(:register_user).returns([])
+          feed.expects(:save).returns(true)
+          feed.expects(:update_feed)
+          post :create, :feed => valid_attributes
+        end
       end
 
       describe "with invalid params" do
