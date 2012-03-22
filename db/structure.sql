@@ -1,5 +1,5 @@
 CREATE TABLE "authorizations" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "provider" varchar(255), "uid" varchar(255), "user_id" integer, "created_at" datetime NOT NULL, "updated_at" datetime NOT NULL);
-CREATE TABLE "entries" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "title" varchar(255), "description" varchar(255), "feed_id" integer, "created_at" datetime NOT NULL, "updated_at" datetime NOT NULL, "guid" varchar(255));
+CREATE TABLE "entries" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "title" varchar(255), "description" varchar(255), "feed_id" integer, "created_at" datetime NOT NULL, "updated_at" datetime NOT NULL, "guid" varchar(255), "enc_url" varchar(255), "enc_length" integer, "enc_type" varchar(255));
 CREATE TABLE "feeds" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "title" varchar(255), "url" varchar(255), "description" varchar(255), "created_at" datetime NOT NULL, "updated_at" datetime NOT NULL);
 CREATE TABLE "schema_migrations" ("version" varchar(255) NOT NULL);
 CREATE TABLE "subscriptions" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "user_id" integer, "feed_id" integer, "created_at" datetime NOT NULL, "updated_at" datetime NOT NULL);
@@ -32,3 +32,5 @@ INSERT INTO schema_migrations (version) VALUES ('20120209054803');
 INSERT INTO schema_migrations (version) VALUES ('20120212051148');
 
 INSERT INTO schema_migrations (version) VALUES ('20120212105350');
+
+INSERT INTO schema_migrations (version) VALUES ('20120322132244');

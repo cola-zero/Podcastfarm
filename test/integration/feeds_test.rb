@@ -140,5 +140,20 @@ describe "Feeds Integration" do
         end
       end
     end
+
+    describe "GET /feeds/1/entries/1" do
+      it "should show title of entry." do
+        sign_in_and_save_feed
+        visit '/feeds/1/entries/1'
+        page.must_have_content "Item#9"
+      end
+
+      it "should show enclosure url" do
+        sign_in_and_save_feed
+        visit '/feeds/1/entries/1'
+        save_and_open_page
+        page.must_have_content "http://example.com/ep9.mp4"
+      end
+    end
   end
 end

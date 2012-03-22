@@ -1,6 +1,6 @@
 # == Schema Information
 #
-# Table name: entry
+# Table name: entries
 #
 #  id          :integer         not null, primary key
 #  title       :string(255)
@@ -9,6 +9,9 @@
 #  created_at  :datetime        not null
 #  updated_at  :datetime        not null
 #  guid        :string(255)
+#  enc_url     :string(255)
+#  enc_length  :integer
+#  enc_type    :string(255)
 #
 
 require 'entry_methods'

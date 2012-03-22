@@ -1,6 +1,6 @@
 # == Schema Information
 #
-# Table name: entry
+# Table name: entries
 #
 #  id          :integer         not null, primary key
 #  title       :string(255)
@@ -9,6 +9,9 @@
 #  created_at  :datetime        not null
 #  updated_at  :datetime        not null
 #  guid        :string(255)
+#  enc_url     :string(255)
+#  enc_length  :integer
+#  enc_type    :string(255)
 #
 
 require 'test_helper'
@@ -20,7 +23,10 @@ describe Entry do
   describe "attributes" do
     let (:attr) { {
         :title => 'Example',
-        :description => "foo bar"
+        :description => "foo bar",
+        :enc_url => 'http://www.example.com/ep1.mp4',
+        :enc_length => 123456,
+        :enc_type => 'video/mp4'
       } }
 
     it "must be valid" do
