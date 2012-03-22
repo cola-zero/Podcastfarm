@@ -10,6 +10,12 @@
   %b Enclosure url:
   = @entry.enc_url
 
+  = video_tag( @entry.enc_url, :class => 'sublime', :preload => 'none', :size => "640x360")
+  -# %a{:id => "player", :href => @entry.enc_url, :style => "display:block"}
+
+  -# %script{:language => "JavaScript" }
+  -#   flowplayer("player", "/flowplayer-3.2.8.swf");
+
 -# = link_to 'Edit', edit_entry_path(@entry)
 \|
 = link_to 'Back', feed_entries_path
