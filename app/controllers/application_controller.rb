@@ -10,9 +10,6 @@ class ApplicationController < ActionController::Base
 
   private
   def password_protected
-    if request.path_info == '/auth/twitter/callback'
-      return true
-    end
     authenticate_or_request_with_http_basic do |username, password|
       username == ENV['STAGING_BASIC_AUTH_USERNAME'] &&
         password == ENV['STAGING_BASIC_AUTH_PASSWORD']
