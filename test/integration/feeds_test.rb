@@ -144,7 +144,6 @@ describe "Feeds Integration" do
       sign_in_and_save_feed
       save_feed(second_url)
       visit feed_path(2)
-      save_and_open_page
       (1..9).each do |n|
         page.must_have_content "Second Item##{n}"
       end
