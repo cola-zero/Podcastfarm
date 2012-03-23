@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<rss version="2.0">
+  <channel>
+    <title>Example Feed2</title>
+    <description>This is second test feed.</description>
+    <language>en</language>
+    <image>
+      <title>Example Feed2</title>
+      <url>http://example.com/example2.png</url>
+      <link>http://example.com/second</link>
+    </image>
+    <item>
+      <title>Second Item#9</title>
+      <description>This is ep.9 in second feed.</description>
+      <author>colazero@example.com</author>
+      <enclosure url="http://example.com/ep9.mp4" length="238944552" type="video/mp4"/>
+      <guid>mbjmxretygdbm6eb2yrnkzbod11qg22</guid>
+      <link>http://example.com/ep9.html</link>
+    </item>
+    <item>
+      <title>Second Item#8</title>
+      <description>This is ep.8 in second feed.</description>
+      <author>colazero@example.com</author>
+      <enclosure url="http://example.com/ep8.mp4" length="238944552" type="video/mp4"/>
+      <guid>xnwzr154fhadxzx8t5caqzwv4t943s2</guid>
+      <link>http://example.com/ep8.html</link>
+    </item>
+    <item>
+      <title>Second Item#7</title>
+      <description>This is ep.7 in second feed.</description>
+      <author>colazero@example.com</author>
+      <enclosure url="http://example.com/ep7.mp4" length="238944552" type="video/mp4"/>
+      <guid>cdo3s8kjgkcrhtls2hc4qn8m78cklp2</guid>
+      <link>http://example.com/ep7.html</link>
+    </item>
+    <item>
+      <title>Second Item#6</title>
+      <description>This is ep.6 in second feed.</description>
+      <author>colazero@example.com</author>
+      <enclosure url="http://example.com/ep6.mp4" length="238944552" type="video/mp4"/>
+      <guid>carlv1szatdaykouoel9mnaicao0sv2</guid>
+      <link>http://example.com/ep6.html</link>
+    </item>
+    <item>
+      <title>Second Item#5</title>
+      <description>This is ep.5 in second feed.</description>
+      <author>colazero@example.com</author>
+      <enclosure url="http://example.com/ep5.mp4" length="238944552" type="video/mp4"/>
+      <guid>35bjnb9yfos2cxl970jwbwx4n57mjn2</guid>
+      <link>http://example.com/ep5.html</link>
+    </item>
+    <item>
+      <title>Second Item#4</title>
+      <description>This is ep.4 in second feed.</description>
+      <author>colazero@example.com</author>
+      <enclosure url="http://example.com/ep4.mp4" length="238944552" type="video/mp4"/>
+      <guid>4kpkhzn3v2up9nr9kea94gds3ra7ov2</guid>
+      <link>http://example.com/ep4.html</link>
+    </item>
+    <item>
+      <title>Second Item#3</title>
+      <description>This is ep.3 in second feed.</description>
+      <author>colazero@example.com</author>
+      <enclosure url="http://example.com/ep3.mp4" length="238944552" type="video/mp4"/>
+      <guid>ebgoy4034ltxulvej60lceyferbv022</guid>
+      <link>http://example.com/ep4.html</link>
+    </item>
+    <item>
+      <title>Second Item#2</title>
+      <description>This is ep.2 in second feed.</description>
+      <author>colazero@example.com</author>
+      <enclosure url="http://example.com/ep2.mp4" length="238944552" type="video/mp4"/>
+      <guid>bxc47gbp635i13ccrh12l3m1gzu55e2</guid>
+      <link>http://example.com/ep3.html</link>
+    </item>
+    <item>
+      <title>Second Item#1</title>
+      <description>This is ep.1 in second feed.</description>
+      <author>colazero@example.com</author>
+      <enclosure url="http://example.com/ep1.mp4" length="238944552" type="video/mp4"/>
+      <guid>0wr8zacwshz5bnk59q47ic1mk4jz1p2</guid>
+      <link>http://example.com/ep2.html</link>
+    </item>
+    <item>
+      <title>Second Item#1</title>
+      <description>This item is ignored because it has same guid</description>
+      <author>colazero@example.com</author>
+      <enclosure url="http://example.com/ep1.mp4" length="238944552" type="video/mp4"/>
+      <guid>0wr8zacwshz5bnk59q47ic1mk4jz1p2</guid>
+      <link>http://example.com/ep1.html</link>
+    </item>
+  </channel>
+</rss>
