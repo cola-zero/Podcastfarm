@@ -12,6 +12,9 @@ group :development, :test do
   gem 'sqlite3'
 end
 
+gem 'omniauth', '~> 1.0.0', :git => 'git://github.com/intridea/omniauth.git'
+gem 'omniauth-contrib', :git => 'git://github.com/intridea/omniauth-contrib.git'
+gem 'omniauth-twitter'
 
 # Gems used only for assets and not required
 # in production environments by default.
@@ -42,17 +45,11 @@ group :development, :test do
   gem 'annotate', :git => 'git://github.com/ctran/annotate_models.git'
   gem 'simplecov', :require => false
   gem 'factory_girl_rails', '~>1.6.0'
-  gem 'omniauth', '~> 1.0.0', :git => 'git://github.com/intridea/omniauth.git'
-  gem 'omniauth-contrib', :git => 'git://github.com/intridea/omniauth-contrib.git'
-  gem 'omniauth-twitter'
 end
 
 
 # To use ActiveModel has_secure_password
 # gem 'bcrypt-ruby', '~> 3.0.0'
-
-# Use unicorn as the web server
-# gem 'unicorn'
 
 # Deploy with Capistrano
 # gem 'capistrano'
