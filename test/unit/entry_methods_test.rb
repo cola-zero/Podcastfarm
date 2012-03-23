@@ -63,7 +63,7 @@ describe "EntryMethods" do
     it "must set enclosure length" do
       act_as_get_entry_information
       entry.get_entry_information(parser)
-      entry.enc_length.must_equal "123456"
+      entry.enc_length.must_equal 123456
     end
     it "must set enclosure type" do
       act_as_get_entry_information
