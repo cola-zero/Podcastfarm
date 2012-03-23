@@ -5,7 +5,12 @@ gem 'rails', '3.2.1'
 # Bundle edge Rails instead:
 # gem 'rails',     :git => 'git://github.com/rails/rails.git'
 
-gem 'sqlite3'
+group :production, :staging do
+  gem 'pg'
+end
+group :development, :test do
+  gem 'sqlite3'
+end
 
 
 # Gems used only for assets and not required
@@ -19,7 +24,7 @@ end
 gem 'jquery-rails'
 gem 'haml-rails'
 gem 'twitter-bootstrap-rails', :git => 'git://github.com/seyhunak/twitter-bootstrap-rails.git'
-gem 'feedzirra', '~> 0.1.1', :git => 'git://github.com/pauldix/feedzirra.git'
+gem 'feedzirra', '~> 0.1.1', :git => 'git://github.com/cola-zero/feedzirra.git'
 
 group :development, :test do
   gem 'minitest', '~> 2.11'
@@ -41,6 +46,7 @@ group :development, :test do
   gem 'omniauth-contrib', :git => 'git://github.com/intridea/omniauth-contrib.git'
   gem 'omniauth-twitter'
 end
+
 
 # To use ActiveModel has_secure_password
 # gem 'bcrypt-ruby', '~> 3.0.0'
