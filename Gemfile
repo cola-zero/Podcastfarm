@@ -28,6 +28,11 @@ end
 gem 'jquery-rails'
 gem 'haml-rails'
 gem 'feedzirra', '~> 0.1.1', :git => 'git://github.com/cola-zero/feedzirra.git'
+gem 'girl_friday'
+
+group :development do
+  gem 'sinatra' # for girl_factory monitor
+end
 
 group :development, :test do
   gem 'minitest', '~> 2.11'
@@ -45,6 +50,7 @@ group :development, :test do
   gem 'annotate', :git => 'git://github.com/ctran/annotate_models.git'
   gem 'simplecov', :require => false
   gem 'factory_girl_rails', '~>1.6.0'
+  gem 'delorean'
 end
 
 

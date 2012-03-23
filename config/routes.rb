@@ -6,7 +6,8 @@ Podcastfarm::Application.routes.draw do
   match 'auth/:provider/callback' => "sessions#create"
   match 'auth/failure' => "sessions#failure"
   resource 'sessions', :only => [:create, :destroy, :failure]
-  resources "feeds", :only => [:show, :new, :create, :index, :destroy] do
+  resources "feeds", :only => [:show, :new, :create, :index, :destroy, :refresh] do
+    get :refresh, :on => :collection
     resources "entries", :only => [:show, :index]
   end
 

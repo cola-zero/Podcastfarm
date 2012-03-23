@@ -4,7 +4,8 @@ require 'feed_methods'
 
 class DummyFeedClass
   include Podcastfarm::FeedMethods
-  attr_accessor :url, :title, :description, :users, :errors, :id
+  attr_accessor :url, :title, :description, :users, :errors, :id,
+  :updated_at
   @id = 1
   @users = []
 end
@@ -90,8 +91,10 @@ describe "Podcastfarm::FeedMethods" do
 
       before(:each) do
         feed.id = 1
+        feed.updated_at = 10.minutes.ago
         mock_parser
         parser.expects(:respond_to?).with(:entries).returns true
+        Feedzirra::Feed.expects(:update).with(parser)
         parser.expects(:entries).returns( [entry_parser, entry_parser])
         Entry.expects(:in_this_feed).with(feed.id).twice.returns(tmp_relation)
         entry.expects(:get_entry_information).with(entry_parser).twice

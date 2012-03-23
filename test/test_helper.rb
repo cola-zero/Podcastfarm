@@ -74,6 +74,7 @@ MiniTest::Spec.register_spec_type( /Controller$/, ControllerSpec )
 class AcceptanceSpec < MiniTest::Spec
   include Rails.application.routes.url_helpers
   include Capybara::DSL
+  include Delorean
 
   self.use_transactional_fixtures = true
 
@@ -150,3 +151,6 @@ end
 # Forces all threads to share the same connection. This works on
 # Capybara because it starts the web server in a thread.
 ActiveRecord::Base.shared_connection = ActiveRecord::Base.connection
+
+
+GirlFriday::Queue.immediate!

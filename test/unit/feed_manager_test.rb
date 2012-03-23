@@ -93,4 +93,32 @@ describe Podcastfarm::FeedManager do
       end
     end
   end
+
+  describe "#update_feed" do
+    it "should respond to this method." do
+      subject.must_respond_to(:update_feed)
+    end
+
+    it "should return false when given url is nil" do
+      subject.update_feed(nil).must_equal false
+    end
+
+    context "when url is not registered" do
+      it "should return false" do
+        Feed.expects(:find_by_url).returns(nil)
+        subject.update_feed("http://unregistered-feed.com").must_equal false
+      end
+    end
+
+    context "when url was registered" do
+      let(:feed) { mock }
+
+      it "should update feed and return true" do
+        feed.expects(:url).twice.returns("http://www.example.com/feed.rss")
+        Feed.expects(:find_by_url).with(feed.url).returns(feed)
+        feed.expects(:update_feed).returns(true)
+        subject.update_feed(feed.url).must_equal true
+      end
+    end
+  end
 end

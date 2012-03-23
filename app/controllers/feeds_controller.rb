@@ -91,6 +91,15 @@ class FeedsController < ApplicationController
     end
   end
 
+  def refresh
+    @feeds = Feed.all
+    @feeds.each do |f|
+      FEED_UPDATE_QUEUE << f.url
+    end
+    session[:return_to] = request.referer || root_path
+    redirect_to session[:return_to], :notice => "Updating all feeds"
+  end
+
   private
 
   def manager

@@ -59,5 +59,7 @@ module Podcastfarm
     config.force_ssl = false
 
     config.assets.initialize_on_precompile = false
+
+    config.threadsafe!
   end
 end

@@ -204,6 +204,39 @@ describe FeedsController do
         assert_redirected_to(feeds_url)
       end
     end
+
+    describe "GET refresh" do
+      it "should redirect to root path" do
+        get :refresh
+        assert_redirected_to root_path
+      end
+
+      it "should back to previous path" do
+        get :index
+        assert_template(:index)
+        get :refresh
+      end
+
+      it "should assign all feeds" do
+        feed = Factory(:feed)
+        get :refresh
+        assigns(:feeds).must_equal [feed]
+      end
+
+      it "should update all feeds" do
+        feed = Factory(:feed)
+        feed2 = Factory(:feed)
+        [feed, feed2].each do |f|
+          Podcastfarm::FeedManager.expects(:update_feed).with(f.url)
+        end
+        get :refresh
+      end
+
+      it "should show updating message" do
+        get :refresh
+        flash[:notice].must_equal "Updating all feeds"
+      end
+    end
   end
 
   context "when user does not signed in" do

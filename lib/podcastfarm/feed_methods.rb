@@ -13,6 +13,13 @@ module Podcastfarm
     end
 
     def update_feed
+      if self.updated_at < 5.minutes.ago
+        if @parser == nil
+          make_parser
+        else
+          Feedzirra::Feed.update(@parser)
+        end
+      end
       return false unless @parser.respond_to?(:entries)
       @parser.entries.each do |item_parser|
         entry = Entry.in_this_feed(self.id).find_from_parser(item_parser).first

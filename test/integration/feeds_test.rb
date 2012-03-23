@@ -34,6 +34,10 @@ describe "Feeds Integration" do
     set_omniauth_mock
   end
 
+  after(:each) do
+    back_to_the_present
+  end
+
   describe "GET /feeds" do
     it "should success" do
       visit feeds_path
@@ -171,6 +175,33 @@ describe "Feeds Integration" do
         visit '/feeds/1/entries/1'
         page.must_have_content "http://example.com/ep9.mp4"
       end
+    end
+  end
+
+  describe "GET /feeds/refresh" do
+    GirlFriday::Queue.immediate!
+
+    def update_feed_fixtures
+      fixtures_path = Rails.root.to_s + '/test/fixtures'
+      system("cp #{fixtures_path}/feed.rss #{fixtures_path}/feed.tmp.rss")
+      system("cp #{fixtures_path}/update_feed.rss #{fixtures_path}/feed.rss")
+    end
+
+    def revert_feed_fixtures
+      fixtures_path = Rails.root.to_s + '/test/fixtures'
+      system("mv #{fixtures_path}/feed.tmp.rss #{fixtures_path}/feed.rss")
+    end
+    it "should refresh feeds" do
+      time_travel_to(30.minutes.ago) do
+        sign_in_and_save_feed
+        visit feeds_path
+      end
+      back_to_the_present
+      update_feed_fixtures
+      visit refresh_feeds_path
+      visit feed_path(Feed.find_by_url(valid_url))
+      page.must_have_content "Item#10"
+      revert_feed_fixtures
     end
   end
 end
