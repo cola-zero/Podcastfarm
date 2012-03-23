@@ -6,7 +6,7 @@ class ApplicationController < ActionController::Base
     redirect_to "/auth/twitter" unless signed_in?
   end
 
-  before_filter :password_protected if Rails.env.stagins?
+  before_filter :password_protected if Rails.env.staging?
 
   private
   def password_protected
