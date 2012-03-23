@@ -2,8 +2,8 @@ class EntriesController < ApplicationController
   # GET /entries
   # GET /entries.json
   def index
-    @entries = Entry.all
     @feed = Feed.find([params[:feed_id]])
+    @entries = Entry.in_this_feed(params[:feed_id])
 
     respond_to do |format|
       format.html # index.html.erb

@@ -3,6 +3,17 @@
 .feed
   = @feed.title
   = @feed.url
+  .entries
+    %table
+      %tr
+        %th Title
+        %th link
+        %th
+        %th
+      - @entries.each do |entry|
+        %tr
+          %td= entry.title
+          %td= link_to "link", feed_entry_path(@feed, entry)
 
 -# = link_to 'Edit', edit_feed_path(@feed)
 -# \|

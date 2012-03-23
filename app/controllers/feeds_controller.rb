@@ -18,6 +18,7 @@ class FeedsController < ApplicationController
   # GET /feeds/1.json
   def show
     @feed = Feed.find(params[:id])
+    @entries = Entry.in_this_feed(params[:id])
 
     respond_to do |format|
       format.html # show.html.erb
@@ -45,10 +46,10 @@ class FeedsController < ApplicationController
   # POST /feeds.json
   def create
     @feed = manager.find_or_create_feed(params[:feed][:url])
-    @feed.update_feed
 
     respond_to do |format|
       if @feed.save || !(Feed.find_by_url(params[:feed][:url]).nil?)
+        @feed.update_feed
         manager.register_user(@feed, current_user)
         format.html { redirect_to @feed, notice: 'Feed was successfully created.' }
         format.json { render json: @feed, status: :created, location: @feed }

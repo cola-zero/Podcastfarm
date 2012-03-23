@@ -23,4 +23,11 @@ FactoryGirl.define do
     guid "asdfg"
     feed_id 1
   end
+
+  factory :entry_in_another_feed, :parent => :entry do
+    title "Entry2"
+    description "Entry in another feed"
+    guid "123456"
+    feed_id 2
+  end
 end

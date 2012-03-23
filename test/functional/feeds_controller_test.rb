@@ -36,10 +36,29 @@ describe FeedsController do
       end
     end
 
-        describe "GET show" do
+    describe "GET show" do
       it "assigns the requested feed as @feed" do
         get :show, :id => feed.id
         assigns(:feed).must_equal(feed)
+      end
+
+      describe "entry association" do
+        let(:entry) { Factory(:entry) }
+        let(:another_entry) { Factory(:entry_in_another_feed)}
+
+        it "should assign entries in this feed" do
+          entry.feed_id.must_equal feed.id
+          entry.feed_id.wont_equal nil
+          get :show, :id => feed.id
+          assigns(:entries).must_equal([entry])
+        end
+
+        it "should not assign entries in another feed" do
+          another_entry.feed_id.wont_equal feed.id
+          another_entry.feed_id.wont_equal nil
+          get :show, :id => feed.id
+          assigns(:entries).must_equal([])
+        end
       end
     end
 

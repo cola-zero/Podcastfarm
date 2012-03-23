@@ -18,6 +18,8 @@ module Podcastfarm
         entry = Entry.in_this_feed(self.id).find_from_parser(item_parser).first
         entry = Entry.new if entry == nil
         entry.get_entry_information(item_parser)
+        entry.feed_id = id
+        entry.save
       end
     end
 

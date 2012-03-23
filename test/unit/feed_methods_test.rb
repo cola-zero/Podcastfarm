@@ -89,21 +89,31 @@ describe "Podcastfarm::FeedMethods" do
       let(:entry) { mock}
 
       before(:each) do
+        feed.id = 1
         mock_parser
         parser.expects(:respond_to?).with(:entries).returns true
         parser.expects(:entries).returns( [entry_parser, entry_parser])
-        Entry.expects(:in_this_feed).with(@id).twice.returns(tmp_relation)
+        Entry.expects(:in_this_feed).with(feed.id).twice.returns(tmp_relation)
         entry.expects(:get_entry_information).with(entry_parser).twice
+        entry.expects(:save).twice
       end
 
       it "must create each entries" do
         tmp_relation.expects(:find_from_parser).with(entry_parser).twice.returns( [] )
         Entry.expects(:new).twice.returns(entry)
+        entry.expects(:feed_id=).twice.with(feed.id)
         feed.update_feed
       end
 
       it "must update exist entries" do
         tmp_relation.expects(:find_from_parser).with(entry_parser).twice.returns( [entry] )
+        entry.expects(:feed_id=).twice.with(feed.id)
+        feed.update_feed
+      end
+
+      it "must set feed_id in entries" do
+        tmp_relation.expects(:find_from_parser).with(entry_parser).twice.returns( [entry] )
+        entry.expects(:feed_id=).twice.with(feed.id)
         feed.update_feed
       end
     end
