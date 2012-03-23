@@ -1,4 +1,11 @@
 # -*- coding: utf-8 -*-
+if ENV["COVERAGE"]
+  require 'simplecov'
+  SimpleCov.start 'rails' do
+    use_merging(['test:units', 'test:functionals', 'test:integration'])
+  end
+end
+
 ENV["RAILS_ENV"] = "test"
 require File.expand_path('../../config/environment', __FILE__)
 require 'rails/test_help'
@@ -37,8 +44,9 @@ end
 # Functional tests = describe ***Controller
 # MiniTest::Spec.register_spec_type( /Controller$/, ControllerSpec )
 MiniTest::Spec.register_spec_type(ControllerSpec) do |desc|
-  return false unless desc.respond_to?(:superclass)
-  desc.superclass == ApplicationController
+  if desc.respond_to?(:superclass)
+    desc.superclass == ApplicationController
+  end
 end
 
 class HelperSpec < MiniTest::Spec

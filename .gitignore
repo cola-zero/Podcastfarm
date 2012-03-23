@@ -4,7 +4,7 @@
 /tmp/
 /.sass-cache/
 /coverage
-/vendor/bundle
+/vendor/bundle[r]
 /.powenv
 /rails_best_practices_output.html
 /bundler_stubs

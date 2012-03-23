@@ -1,4 +1,5 @@
 require 'test_helper'
+SimpleCov.command_name 'test:inegration' if ENV["COVERAGE"]
 
 describe "Feeds Integration" do
   # include TransactionalTests
@@ -7,10 +8,28 @@ describe "Feeds Integration" do
     "file://#{URI.escape(File.join(File.dirname(File.expand_path(__FILE__, Dir.getwd)), "..", "fixtures", "feed.rss"))}"
   end
 
+  def second_url
+    "file://#{URI.escape(File.join(File.dirname(File.expand_path(__FILE__, Dir.getwd)), "..", "fixtures", "second_feed.rss"))}"
+  end
+
   def sign_in
     visit "/auth/twitter"
   end
 
+  def save_feed(url)
+    visit new_feed_path
+    page.fill_in "feed_url", :with => url
+    page.click_button "Save"
+  end
+
+  def sign_in_and_save_feed
+    sign_in
+    save_feed(valid_url)
+  end
+
+  def manager
+    Podcastfarm::FeedManager
+  end
   before(:each)do
     set_omniauth_mock
   end
@@ -25,7 +44,7 @@ describe "Feeds Integration" do
     it "should show feeds" do
       sign_in
       feed = FactoryGirl.create(:feed)
-      feed.register_user(User.find_by_nickname("cola_zero"))
+      manager.register_user(feed, User.find_by_nickname("cola_zero"))
       visit feeds_path
       page.must_have_content feed.title
     end
@@ -35,8 +54,8 @@ describe "Feeds Integration" do
       user = User.find_by_nickname("cola_zero")
       feed1 = Factory(:feed)
       feed2 = Factory(:feed)
-      feed1.register_user(user)
-      feed2.register_user(user)
+      manager.register_user(feed1, user)
+      manager.register_user(feed2, user)
       visit feeds_path
       page.must_have_content feed1.title
       page.must_have_content feed2.title
@@ -48,8 +67,8 @@ describe "Feeds Integration" do
       different_user = Factory(:user)
       feed1 = Factory(:feed)
       feed2 = Factory(:feed)
-      feed1.register_user(user)
-      feed2.register_user(different_user)
+      manager.register_user(feed1, user)
+      manager.register_user(feed2, different_user)
       visit feeds_path
       page.wont_have_content feed2.title
       page.wont_have_content feed2.url
@@ -112,15 +131,47 @@ describe "Feeds Integration" do
   end
 
   describe "GET /feeds/1" do
+
     it "should show title and url" do
-      sign_in
-      visit new_feed_path
-      page.fill_in "feed_url", :with => valid_url
-      page.click_button "Save"
+      sign_in_and_save_feed
       visit feeds_path
       page.click_link "Show"
       page.must_have_content "Example Feed"
       page.must_have_content Feed.find_by_title("Example Feed").url
+    end
+
+    it "should show entries in this feed" do
+      sign_in_and_save_feed
+      save_feed(second_url)
+      visit feed_path(2)
+      save_and_open_page
+      (1..9).each do |n|
+        page.must_have_content "Second Item##{n}"
+      end
+    end
+
+    describe "GET /feeds/1/entries" do
+      it "should show title of each entries" do
+        sign_in_and_save_feed
+        visit '/feeds/1/entries'
+        (1..9).each do |n|
+          page.must_have_content "Item##{n}"
+        end
+      end
+    end
+
+    describe "GET /feeds/1/entries/1" do
+      it "should show title of entry." do
+        sign_in_and_save_feed
+        visit '/feeds/1/entries/1'
+        page.must_have_content "Item#9"
+      end
+
+      it "should show enclosure url" do
+        sign_in_and_save_feed
+        visit '/feeds/1/entries/1'
+        page.must_have_content "http://example.com/ep9.mp4"
+      end
     end
   end
 end

@@ -12,6 +12,7 @@
           %a.brand Podcast Farm
           %ul.nav
             %li.active= link_to "Home", :root
+            %li= link_to "Feeds", feeds_path
           %ul{"class" => ["nav", "secondary-nav"]}
             - if signed_in?
               %li{"class" => "dropdown"}

@@ -23,6 +23,7 @@ gem 'feedzirra', '~> 0.1.1', :git => 'git://github.com/pauldix/feedzirra.git'
 
 group :development, :test do
   gem 'minitest', '~> 2.11'
+  gem 'mini_backtrace'
   gem 'capybara-webkit'
   gem "capybara_minitest_spec"
   gem 'mocha', :require => false

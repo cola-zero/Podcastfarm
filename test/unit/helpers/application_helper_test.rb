@@ -1,4 +1,5 @@
 require 'test_helper'
+SimpleCov.command_name 'test:units' if ENV["COVERAGE"]
 
 describe "ApplicationHelpers" do
 
@@ -66,6 +67,7 @@ describe "ApplicationHelpers" do
 
     it "should set nil to current_user" do
       helper.sign_out
+      session[:user_id].must_be_nil
       helper.current_user.must_equal nil
     end
   end

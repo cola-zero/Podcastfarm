@@ -1,0 +1,14 @@
+%h1 Listing entries
+
+%table
+  %tr
+    %th Title
+    %th Description
+    %th
+    %th
+    %th
+
+  - @entries.each do |entry|
+    %tr
+      %td= entry.title
+      %td= link_to "link", feed_entry_path(@feed, entry)
