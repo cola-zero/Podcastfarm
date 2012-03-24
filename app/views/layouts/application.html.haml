@@ -22,11 +22,17 @@
             - else
               %li= link_to "Sign in", "/auth/twitter"
     .contents
-      %p#notice
-        = notice
-      %p#alert
-        = alert
       .container
+        .row
+          .alert-area{ :class => "span4 offset2" }
+            - if flash[:notice]
+              %p#notice.alert
+                %a{:class => "close", "data-dismiss" => "alert"} x
+                = flash[:notice]
+            - if flash[:alert]
+              %p#alert.alert
+                %a{:class => "close", "data-dismiss" => "alert"} x
+                = flash[:alert]
         = yield
 
         -# <li class="dropdown" data-dropdown="dropdown" >
