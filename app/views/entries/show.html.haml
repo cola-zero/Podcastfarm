@@ -8,9 +8,6 @@
   %b Enclosure url:
   = @entry.enc_url
 
-  - if @entry.enc_type =~ /video/
-    = video_tag( @entry.enc_url, :preload => true, :controls => true, :size => "640x360")
-  - elsif @entry.enc_type =~ /audio/
-    = audio_tag( @entry.enc_url, :preload => true, :controls => true)
+  = video_tag( @entry.enc_url, :preload => true, :controls => true, :size => "640x360")
 \|
 = link_to 'Back', feed_entries_path(@feed)
