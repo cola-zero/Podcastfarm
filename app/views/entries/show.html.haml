@@ -4,10 +4,9 @@
 %p
   %b Description:
   = @entry.description
-%p
   %b Enclosure url:
   = @entry.enc_url
-
+%p
   = video_tag( @entry.enc_url, :preload => true, :controls => true, :size => "640x360")
 \|
 = link_to 'Back', feed_entries_path(@feed)
