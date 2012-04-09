@@ -10,3 +10,8 @@
 
 ** Use Podcastfarm in heroku.
    You can try Podcastfarm using heroku because it's use Rails.
+
+
+** Contacts
+   homepage: https://github.com/cola-zero/Podcastfarm
+   twitter: https://twitter.com/cola_zero
