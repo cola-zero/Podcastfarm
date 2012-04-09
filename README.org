@@ -1,0 +1,12 @@
+* Welcome to Podcastfarm
+  Podcastfarm is web application that can play Podcast in the web.
+  You can add feeds and watch shows in the browser.
+
+** Caution
+   Podcastfam too yang project to use daily.
+   There should have many bugs.
+
+   Prease notify me when you find bugs. Pull requests are also welcome.
+
+** Use Podcastfarm in heroku.
+   You can try Podcastfarm using heroku because it's use Rails.
